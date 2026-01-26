@@ -1,7 +1,7 @@
 Django>=5.1,<6.1
 python-dotenv==1.2.1
 wagtail>=7.0,<7.3
-gunicorn>=21.2.0,<24.0.0
+gunicorn>=21.2.0,<25.0.0
 psycopg2==2.9.11
 dj-database-url>=2.1.0,<4.0.0
 whitenoise>=5.0,<6.12
