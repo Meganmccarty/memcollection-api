@@ -18,7 +18,7 @@ django.setup()
 project = "MEM Collection API"
 copyright = "2026, Megan McCarty"
 author = "Megan McCarty"
-release = "0.10.2"
+release = "0.11.0"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
