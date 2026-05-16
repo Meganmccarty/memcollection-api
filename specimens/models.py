@@ -3,6 +3,7 @@ import datetime
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from wagtail.fields import RichTextField
+from wagtail.search import index
 
 from geography.models import CollectingTrip, Country, County, GPS, Locality, State
 from mixins.models import TimeStampMixin
@@ -10,7 +11,7 @@ from taxonomy.models import Genus, Family, Order, Species, Subfamily, Subspecies
 from utils.insect_attributes import Sex, Stage
 
 
-class Person(TimeStampMixin):
+class Person(index.Indexed, TimeStampMixin):
     """A model that represents a Person object.
 
     Attributes:
@@ -80,6 +81,10 @@ class Person(TimeStampMixin):
         middle_initial = f" {self.middle_initial}." if self.middle_initial else ""
         suffix = f", {self.suffix}" if self.suffix else ""
         return f"{self.first_name}{middle_initial} {self.last_name}{suffix}"
+
+    search_fields = [
+        index.AutocompleteField("__str__"),
+    ]
 
 
 class SpecimenRecord(TimeStampMixin):

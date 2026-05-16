@@ -2,11 +2,12 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.template.defaultfilters import slugify
 from wagtail.fields import RichTextField
+from wagtail.search import index
 
 from mixins.models import TimeStampMixin
 
 
-class Country(TimeStampMixin):
+class Country(index.Indexed, TimeStampMixin):
     """A model that represents a Country object.
 
     Attributes:
@@ -35,8 +36,13 @@ class Country(TimeStampMixin):
         """
         return f"{self.name}"
 
+    search_fields = [
+        index.AutocompleteField("name"),
+        index.AutocompleteField("abbr"),
+    ]
 
-class State(TimeStampMixin):
+
+class State(index.Indexed, TimeStampMixin):
     """A model that represents a State object.
 
     Attributes:
@@ -74,8 +80,13 @@ class State(TimeStampMixin):
         """
         return f"{self.name}"
 
+    search_fields = [
+        index.AutocompleteField("name"),
+        index.AutocompleteField("abbr"),
+    ]
 
-class County(TimeStampMixin):
+
+class County(index.Indexed, TimeStampMixin):
     """A model that represents a County object.
 
     Attributes:
@@ -171,8 +182,12 @@ class County(TimeStampMixin):
 
         return "{}{}{}".format(self.name, abbr, line)
 
+    search_fields = [
+        index.AutocompleteField("__str__"),
+    ]
 
-class Locality(TimeStampMixin):
+
+class Locality(index.Indexed, TimeStampMixin):
     """A model that represents a Locality object.
 
     This class contains validation in the Wagtail admin to prevent a user from adding multiple
@@ -299,8 +314,12 @@ class Locality(TimeStampMixin):
 
         raise ValidationError(errors)
 
+    search_fields = [
+        index.AutocompleteField("__str__"),
+    ]
 
-class GPS(TimeStampMixin):
+
+class GPS(index.Indexed, TimeStampMixin):
     """A model that represents a GPS object.
 
     Note: The latitude and longitude fields are optional, as there are cases where elevation or a
@@ -379,8 +398,12 @@ class GPS(TimeStampMixin):
 
         return f"{self.elevation}m"
 
+    search_fields = [
+        index.AutocompleteField("__str__"),
+    ]
 
-class CollectingTrip(TimeStampMixin):
+
+class CollectingTrip(index.Indexed, TimeStampMixin):
     """A model that represents a CollectingTrip object.
 
     Attributes:
@@ -428,3 +451,7 @@ class CollectingTrip(TimeStampMixin):
         """A string representing all of the states collected in during a trip."""
 
         return ", ".join([str(state) for state in self.states.all()])
+
+    search_fields = [
+        index.AutocompleteField("name"),
+    ]

@@ -57,6 +57,9 @@ makemigrations: ## Makes migrations of the Wagtail app within the Docker contain
 migrate: ## Migrates the database of the Wagtail app within the Docker container
 	docker compose run --rm web python manage.py migrate
 
+update-index: ## Updates the Wagtail search index
+	docker compose run --rm web python manage.py update_index
+
 createsuperuser: ## Creates a super user for the Wagtail app
 	docker compose run --rm web python manage.py createsuperuser
 

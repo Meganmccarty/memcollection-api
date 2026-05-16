@@ -1,9 +1,10 @@
 from django.db import models
+from wagtail.search import index
 
 from mixins.models import TimeStampMixin
 
 
-class TaxonomyBase(models.Model):
+class TaxonomyBase(index.Indexed, models.Model):
     """An abstract model for a TaxonomyBase object. This model can be used as the foundation for all
     other taxonomy models.
 
@@ -37,6 +38,11 @@ class TaxonomyBase(models.Model):
         """
 
         return self.name
+
+    search_fields = [
+        index.AutocompleteField("name"),
+        index.AutocompleteField("common_name"),
+    ]
 
 
 class Order(TimeStampMixin, TaxonomyBase):
