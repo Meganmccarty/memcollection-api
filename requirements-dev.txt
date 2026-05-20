@@ -6,7 +6,7 @@ django-filter==25.2
 flake8==7.3.0
 furo
 myst-parser>=4.0,<5.1
-psycopg2-binary==2.9.11
+psycopg2-binary==2.9.12
 python-dotenv==1.2.1
 sphinx>=8.2,<9.2
 wagtail>=7.4,<7.5
