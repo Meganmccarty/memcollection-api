@@ -1,4 +1,4 @@
 Models
 ======
 
-.. autoclass:: mixins.models.TimeStampMixin
+.. autoclass:: core.models.TimeStampMixin

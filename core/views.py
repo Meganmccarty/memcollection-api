@@ -18,7 +18,7 @@ class CustomSnippetDeleteView(DeleteView):
 
             Raises:
                 PermissionDenied: If the object being deleted has a usage that is protected.
-            
+
             Returns:
                 HttpResponseRedirect: If RestrictedError is found, stay on page. If deletion is \
                 successful, redirect to success_url.
@@ -37,13 +37,12 @@ class CustomSnippetDeleteView(DeleteView):
             return hook_response
         return HttpResponseRedirect(success_url)
 
-
     def _handle_restricted_error(self, error: RestrictedError):
         """Handles RestrictedError exceptions raised when trying to delete an object that is \
         referenced by another object with a protected foreign key. Displays an error message \
         in Wagtail's warning banner, with each protected object linked to that object's edit \
         view in Wagtail).
-    
+
             Returns:
                 HttpResponseRedirect: Redirects to the same page, with an error message in the \
                 banner.
@@ -61,21 +60,24 @@ class CustomSnippetDeleteView(DeleteView):
             for obj in objs:
                 try:
                     edit_url = reverse(
-                        f"wagtailsnippets_{model_class._meta.app_label}_{model_class._meta.model_name}:edit", args=[obj.pk],
+                        f"wagtailsnippets_{model_class._meta.app_label}_\
+                            {model_class._meta.model_name}:edit",
+                        args=[obj.pk],
                     )
                     links.append(format_html('<a href="{}">{}</a>', edit_url, str(obj)))
                 except NoReverseMatch:
-                    links.append(format_html('{}', str(obj)))
+                    links.append(format_html("{}", str(obj)))
             parts.append(format_html("{}: {}", model_name, mark_safe(", ".join(links))))
 
         detail = "; ".join(parts)
 
         messages.error(
             self.request,
-            mark_safe(f"Cannot delete — model instance referenced by: {detail}")
+            mark_safe(f"Cannot delete — model instance referenced by: {detail}"),
         )
 
         from django.shortcuts import redirect
+
         return redirect(self.get_delete_url())
 
 

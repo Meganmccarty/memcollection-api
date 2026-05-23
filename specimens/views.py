@@ -1,9 +1,9 @@
 from wagtail.api.v2.views import BaseAPIViewSet
 
+from core.utils.helpers import get_fields
 from specimens.filters import SpecimenRecordFilter
 from specimens.models import Person, SpecimenRecord
 from specimens.serializers import PersonSerializer, SpecimenRecordSerializer
-from utils.helpers import get_fields
 
 
 class PeopleAPIViewSet(BaseAPIViewSet):

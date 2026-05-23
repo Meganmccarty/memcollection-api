@@ -63,9 +63,9 @@ different parts of the app.
    :maxdepth: 3
    :caption: Contents:
 
+   core/index
    geography/index
    images/index
-   mixins/index
    pages/index
    specimens/index
    taxonomy/index

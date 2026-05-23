@@ -1,5 +1,6 @@
 from wagtail.api.v2.views import BaseAPIViewSet
 
+from core.utils.helpers import get_fields
 from geography.models import CollectingTrip, County, Country, GPS, Locality, State
 from geography.serializers import (
     CollectingTripSerializer,
@@ -13,7 +14,6 @@ from geography.serializers import (
     NestedStateSerializer,
     StateSerializer,
 )
-from utils.helpers import get_fields
 
 
 class CountriesAPIViewSet(BaseAPIViewSet):

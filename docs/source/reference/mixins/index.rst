@@ -1,8 +1,7 @@
-Mixins
-======
+Core
+====
 
-The ``mixins`` app is responsible for containing mixins that are used across the project's other
-apps.
+The ``core`` app holds utility functions, viewsets, and other code that is used across many apps.
 
 .. toctree::
    :maxdepth: 2
