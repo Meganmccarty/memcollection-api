@@ -12,24 +12,24 @@ class CustomSnippetDeleteView(DeleteView):
     """A view that extends Wagtail's ``DeleteView`` for handling ``RestrictedError`` exceptions."""
 
     def form_valid(self, form):
-        """Overrides the default ``form_valid`` method so that RestrictedErrors can be handled. These \
-        errors occur when ``on_delete`` is set to ``RESTRICT`` and the object that we're trying to delete \
-        is referenced by another object (it's foreign key is protected). Rather than show a 500 \
-        Internal Server Error (when ``debug = False``) or a stack trace (when ``debug = True``), we catch \
-        the error, stay on the page, and display it in a warning banner.
+        """Overrides the default ``form_valid`` method so that RestrictedErrors can be handled. \
+        These errors occur when ``on_delete`` is set to ``RESTRICT`` and the object that we're \
+        trying to delete is referenced by another object (it's foreign key is protected). Rather \
+        than show a 500 Internal Server Error (when ``debug = False``) or a stack trace (when \
+        ``debug = True``), we catch the error, stay on the page, and display it in a warning banner.
 
             Raises:
                 ``PermissionDenied``: If the object being deleted has a usage that is protected.
 
             Returns:
-                ``HttpResponseRedirect``: If ``RestrictedError`` is found, stay on page. If deletion is \
-                successful, redirect to ``success_url``.
+                ``HttpResponseRedirect``: If ``RestrictedError`` is found, stay on page. If \
+                deletion is successful, redirect to ``success_url``.
         """
 
         if self.usage and self.usage.is_protected:
             raise PermissionDenied
         try:
-            super().delete_action()
+            self.delete_action()
         except RestrictedError as e:
             return self._handle_restricted_error(e)
         success_url = self.get_success_url()
@@ -62,8 +62,9 @@ class CustomSnippetDeleteView(DeleteView):
             for obj in objs:
                 try:
                     edit_url = reverse(
-                        f"wagtailsnippets_{model_class._meta.app_label}_\
-                            {model_class._meta.model_name}:edit",
+                        f"wagtailsnippets_{
+                            model_class._meta.app_label
+                        }_{model_class._meta.model_name}:edit",
                         args=[obj.pk],
                     )
                     links.append(format_html('<a href="{}">{}</a>', edit_url, str(obj)))
