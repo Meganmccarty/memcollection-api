@@ -8,3 +8,5 @@ The ``core`` app holds utility functions, viewsets, and other code that is used 
    :caption: Contents:
 
    models
+   utils
+   views

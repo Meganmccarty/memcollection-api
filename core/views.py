@@ -9,19 +9,21 @@ from wagtail.snippets.views.snippets import SnippetViewSet
 
 
 class CustomSnippetDeleteView(DeleteView):
+    """A view that extends Wagtail's ``DeleteView`` for handling ``RestrictedError`` exceptions."""
+
     def form_valid(self, form):
-        """Overrides the default form_valid method so that RestrictedErrors can be handled. These \
-        errors occur when on_delete is set to RESTRICT and the object that we're trying to delete \
+        """Overrides the default ``form_valid`` method so that RestrictedErrors can be handled. These \
+        errors occur when ``on_delete`` is set to ``RESTRICT`` and the object that we're trying to delete \
         is referenced by another object (it's foreign key is protected). Rather than show a 500 \
-        Internal Server Error (when debug = False) or a stack trace (when debug = True), we catch \
+        Internal Server Error (when ``debug = False``) or a stack trace (when ``debug = True``), we catch \
         the error, stay on the page, and display it in a warning banner.
 
             Raises:
-                PermissionDenied: If the object being deleted has a usage that is protected.
+                ``PermissionDenied``: If the object being deleted has a usage that is protected.
 
             Returns:
-                HttpResponseRedirect: If RestrictedError is found, stay on page. If deletion is \
-                successful, redirect to success_url.
+                ``HttpResponseRedirect``: If ``RestrictedError`` is found, stay on page. If deletion is \
+                successful, redirect to ``success_url``.
         """
 
         if self.usage and self.usage.is_protected:
@@ -38,13 +40,13 @@ class CustomSnippetDeleteView(DeleteView):
         return HttpResponseRedirect(success_url)
 
     def _handle_restricted_error(self, error: RestrictedError):
-        """Handles RestrictedError exceptions raised when trying to delete an object that is \
+        """Handles ``RestrictedError`` exceptions raised when trying to delete an object that is \
         referenced by another object with a protected foreign key. Displays an error message \
         in Wagtail's warning banner, with each protected object linked to that object's edit \
         view in Wagtail).
 
             Returns:
-                HttpResponseRedirect: Redirects to the same page, with an error message in the \
+                ``HttpResponseRedirect``: Redirect to the same page, with an error message in the \
                 banner.
         """
 
@@ -82,6 +84,7 @@ class CustomSnippetDeleteView(DeleteView):
 
 
 class SnippetWithCustomDeleteViewSet(SnippetViewSet):
-    """A SnippetViewSet that uses the CustomSnippetDeleteView for handling RestrictedErrors."""
+    """A ``SnippetViewSet`` that uses the ``CustomSnippetDeleteView`` for handling \
+    ``RestrictedError`` exceptions."""
 
     delete_view_class = CustomSnippetDeleteView
