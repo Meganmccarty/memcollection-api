@@ -112,6 +112,9 @@ full-prod-backup: ## Creates a full/complete Postgres backup from the production
 full-prod-restore: ## Restores a full/complete Postgres backup to the production database (must set 'dbname="prod-dbname"' and 'filename=path/to/file.back')
 	pg_restore -v -d "$(dbname)" $(filename)
 
+get-b2-backup: ## Restores a prod backup from Backblaze B2 to the local database
+	aws s3 cp s3://${bucket-name}/${filename} ./db_backups/${new-filename} --endpoint-url ${url} --region ${region} --profile ${profile}
+
 local-backup: ## Creates a JSON backup of the local database (but only of my models)
 	docker compose run --rm web python manage.py dumpdata geography specimens taxonomy > \
 	"$$(date +'backup_local_memcollection_%F-%T.json')" --indent=4 --natural-foreign
