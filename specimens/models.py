@@ -145,6 +145,7 @@ class SpecimenRecord(TimeStampMixin):
         max_length=15,
         verbose_name="Unique Specimen Identifier",
         help_text="Enter the specimen's unique identifier number",
+        unique=True,
     )
 
     # Taxonomy fields
