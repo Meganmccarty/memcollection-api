@@ -1,0 +1,16 @@
+.error a {
+    color: var(--w-color-text-button-critical-outline-hover) !important; 
+    text-decoration: underline !important;
+}
+
+.error a:hover {
+    text-decoration: none !important;
+}
+
+.error a:focus {
+    outline: thin dotted;
+}
+
+.error a:focus-visible {
+    outline: 3px solid var(--w-color-text-button-critical-outline-hover) !important;
+}
