@@ -4,7 +4,7 @@ from django.template.defaultfilters import slugify
 from wagtail.fields import RichTextField
 from wagtail.search import index
 
-from mixins.models import TimeStampMixin
+from core.models import TimeStampMixin
 
 
 class Country(index.Indexed, TimeStampMixin):

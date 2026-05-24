@@ -1,12 +1,13 @@
 from wagtail.admin.panels import FieldPanel, HelpPanel, MultiFieldPanel
 from wagtail.admin.ui.tables import UpdatedAtColumn
-from wagtail.snippets.views.snippets import SnippetViewSet, SnippetViewSetGroup
+from wagtail.snippets.views.snippets import SnippetViewSetGroup
 from wagtail.snippets.models import register_snippet
 
+from core.views import SnippetWithCustomDeleteViewSet
 from geography.models import CollectingTrip, Country, County, GPS, Locality, State
 
 
-class CountrySnippet(SnippetViewSet):
+class CountrySnippet(SnippetWithCustomDeleteViewSet):
     """A snippet for the Country model."""
 
     model = Country
@@ -16,7 +17,7 @@ class CountrySnippet(SnippetViewSet):
     list_display = ["name", "abbr", UpdatedAtColumn()]
 
 
-class StateSnippet(SnippetViewSet):
+class StateSnippet(SnippetWithCustomDeleteViewSet):
     """A snippet for the State model."""
 
     model = State
@@ -27,7 +28,7 @@ class StateSnippet(SnippetViewSet):
     list_per_page = 50
 
 
-class CountySnippet(SnippetViewSet):
+class CountySnippet(SnippetWithCustomDeleteViewSet):
     """A snippet for the County model."""
 
     model = County
@@ -39,7 +40,7 @@ class CountySnippet(SnippetViewSet):
     list_per_page = 100
 
 
-class LocalitySnippet(SnippetViewSet):
+class LocalitySnippet(SnippetWithCustomDeleteViewSet):
     """A snippet for the Locality model.
 
     It includes some custom panels for display in the Wagtail admin. While these panels could be
@@ -79,7 +80,7 @@ class LocalitySnippet(SnippetViewSet):
     ]
 
 
-class GPSSnippet(SnippetViewSet):
+class GPSSnippet(SnippetWithCustomDeleteViewSet):
     """A snippet for the GPS model."""
 
     model = GPS
@@ -97,7 +98,7 @@ class GPSSnippet(SnippetViewSet):
     list_per_page = 100
 
 
-class CollectingTripSnippet(SnippetViewSet):
+class CollectingTripSnippet(SnippetWithCustomDeleteViewSet):
     """A snippet for the CollectingTrip model."""
 
     model = CollectingTrip

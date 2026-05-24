@@ -56,16 +56,16 @@ Note that there is no API key or access token needed to access this data. Data r
 Wagtail API is read-only (anything other than GET is not allowed). Thus, the data in my collection
 is publicly available.
 
-For specific endpoint references, use the table of contents below to see specific examples for
-different parts of the app.
+For specific endpoint references, or for more information about different areas of the application
+(such as models or utility functions), use the table of contents below.
 
 .. toctree::
    :maxdepth: 3
    :caption: Contents:
 
+   core/index
    geography/index
    images/index
-   mixins/index
    pages/index
    specimens/index
    taxonomy/index

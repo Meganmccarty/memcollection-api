@@ -2,12 +2,12 @@ from django.db import models
 from wagtail.fields import RichTextField
 from wagtail.images.models import AbstractImage, AbstractRendition, Image
 
+from core.models import TimeStampMixin
+from core.utils.insect_attributes import Sex, Stage
 from geography.models import CollectingTrip, Country, County, GPS, Locality, State
-from mixins.models import TimeStampMixin
 from pages.models import SpeciesPage
 from specimens.models import SpecimenRecord
 from taxonomy.models import Species
-from utils.insect_attributes import Sex, Stage
 
 
 class CustomImage(AbstractImage, TimeStampMixin):

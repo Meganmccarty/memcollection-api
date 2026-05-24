@@ -1,7 +1,7 @@
 from django.db import models
 from wagtail.search import index
 
-from mixins.models import TimeStampMixin
+from core.models import TimeStampMixin
 
 
 class TaxonomyBase(index.Indexed, models.Model):

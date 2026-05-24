@@ -155,7 +155,7 @@ Backblaze, filling in the necessary details you saved from earlier:
 
 .. code::
 
-    aws s3 cp s3://<bucket-name>/<path>/<to>/<file>/<paste-file-name-here> ./<name-the-copy-whatever-you-want-here> --endpoint-url <bucket-endpoint-url> --region <region-bucket-is-in> --profile <name-of-custom-profile>
+    make get-b2-backup bucket-name=<bucket-name> filename=<path>/<to>/<file>/<filename> new-filename=<name-the-copy-whatever-you-want-here> url=<endpoint-url> region=<region-bucket-is-in> profile=<name-of-aws-profile>
 
 This should make a copy of the file from Backblaze onto your local machine.
 

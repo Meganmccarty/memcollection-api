@@ -1,5 +1,6 @@
 from wagtail.api.v2.views import BaseAPIViewSet
 
+from core.utils.helpers import get_fields
 from taxonomy.models import Family, Genus, Order, Species, Subfamily, Subspecies, Tribe
 from taxonomy.serializers import (
     FamilySerializer,
@@ -16,7 +17,6 @@ from taxonomy.serializers import (
     SubspeciesSerializer,
     TribeSerializer,
 )
-from utils.helpers import get_fields
 
 
 class OrdersAPIViewSet(BaseAPIViewSet):

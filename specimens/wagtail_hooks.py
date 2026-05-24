@@ -1,9 +1,10 @@
 from wagtail import hooks
 from wagtail.admin.ui.tables import UpdatedAtColumn
 from wagtail.admin.panels import FieldPanel, FieldRowPanel, MultiFieldPanel
-from wagtail.snippets.views.snippets import SnippetViewSet, SnippetViewSetGroup
+from wagtail.snippets.views.snippets import SnippetViewSetGroup
 from wagtail.snippets.models import register_snippet
 
+from core.views import SnippetWithCustomDeleteViewSet
 from specimens.models import Person, SpecimenRecord
 
 
@@ -12,7 +13,7 @@ def register_icons(icons):
     return icons + ["specimens/butterfly.svg"]
 
 
-class PersonSnippet(SnippetViewSet):
+class PersonSnippet(SnippetWithCustomDeleteViewSet):
     """A snippet for the Person model."""
 
     model = Person
@@ -32,7 +33,7 @@ class PersonSnippet(SnippetViewSet):
     list_per_page = 50
 
 
-class SpecimenRecordSnippet(SnippetViewSet):
+class SpecimenRecordSnippet(SnippetWithCustomDeleteViewSet):
     """A snippet for the SpecimenRecord model."""
 
     model = SpecimenRecord
