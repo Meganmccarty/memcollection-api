@@ -1,5 +1,6 @@
+/* Error message banner in admin interface */
 .error a {
-    color: var(--w-color-text-button-critical-outline-hover) !important; 
+    color: var(--w-color-critical-50) !important; 
     text-decoration: underline !important;
 }
 
@@ -12,5 +13,87 @@
 }
 
 .error a:focus-visible {
-    outline: 3px solid var(--w-color-text-button-critical-outline-hover) !important;
+    outline: 3px solid var(--w-color-critical-50) !important;
+}
+
+.sidebar-custom-branding {
+    height: 150px;
+}
+
+/* Main sidebar navigation menu icon */
+a.sidebar-custom-branding {
+    color: #F6F6F8;
+}
+
+.sidebar-wagtail-branding__icon-wrapper {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: visible;
+}
+
+.sidebar-wagtail-branding__icon-wrapper svg {
+    height: 6.25rem;
+    width: 6.25rem;
+}
+
+.sidebar-custom-branding:hover {
+    padding: 0;
+}
+
+.sidebar-custom-branding:hover .sidebar-wagtail-branding__icon-wrapper {
+    height: 150px;
+    width: 150px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .w-duration-150 {
+        transition-duration: 0ms;
+    }
+
+    .w-transition-all {
+        transition-duration: 0ms;
+        transition-property: none;
+    }
+
+    .sidebar-custom-branding:hover .sidebar-wagtail-branding__icon-wrapper {
+        height: 110px;
+        width: 110px;
+    }
+
+    .sidebar-custom-branding:hover {
+        padding: 10px 0;
+    }
+}
+
+/* Userbar icon on non-admin (site) pages */
+#wagtail-userbar-trigger svg {
+    height: 5rem;
+    fill: #262626;
+    width: 5rem;
+}
+
+/* Logo on admin 404 page */
+.logo-404-page {
+    align-items: center;
+    display: flex;
+    height: 500px;
+    padding: 5rem 0 10rem 0;
+}
+.logo-404-page svg {
+    height: 15rem;
+    width: 15rem;
+}
+
+/* Logo on admin login page */
+.login-logo {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.login-logo svg {
+    height: 6.25rem;
+    width: 6.25rem;
 }

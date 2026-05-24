@@ -1,0 +1,14 @@
+{% extends "wagtailadmin/login.html" %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/memcollection.css' %}">
+{% endblock extra_css %}
+
+{% block branding_logo %}
+    <div class="login-logo">
+        {% include "logo.html" %}
+    </div>
+{% endblock %}
+
+{% block branding_login %}MEM Collection Admin Sign In{% endblock %}
