@@ -60,6 +60,9 @@ migrate: ## Migrates the database of the Wagtail app within the Docker container
 update-index: ## Updates the Wagtail search index
 	docker compose run --rm web python manage.py update_index
 
+rebuild-ref-index: ## Rebuilds the Wagtail reference index (for when data is added or edited outside of Wagtail)
+	docker compose run --rm web python manage.py rebuild_references_index
+
 createsuperuser: ## Creates a super user for the Wagtail app
 	docker compose run --rm web python manage.py createsuperuser
 
@@ -112,6 +115,9 @@ full-prod-backup: ## Creates a full/complete Postgres backup from the production
 full-prod-restore: ## Restores a full/complete Postgres backup to the production database (must set 'dbname="prod-dbname"' and 'filename=path/to/file.back')
 	pg_restore -v -d "$(dbname)" $(filename)
 
+get-b2-backup: ## Restores a prod backup from Backblaze B2 to the local database (must set 'bucket-name=<bucket-name>', 'filename=<path>/<to>/<file>/<filename>', 'new-filename=<new-filename>', 'url=<endpoint-url>', 'region=<region-bucket-is-in>', and 'profile=<name-of-aws-profile>')
+	aws s3 cp s3://${bucket-name}/${filename} ./db_backups/${new-filename} --endpoint-url ${url} --region ${region} --profile ${profile}
+
 local-backup: ## Creates a JSON backup of the local database (but only of my models)
 	docker compose run --rm web python manage.py dumpdata geography specimens taxonomy > \
 	"$$(date +'backup_local_memcollection_%F-%T.json')" --indent=4 --natural-foreign
@@ -145,6 +151,9 @@ fly-secrets: ## Sets up Fly.io to use the .env.production secrets file
 fly-deploy: ## Deploys to Fly.io
 	make fly-secrets && \
 	fly deploy --ha=false
+
+fly-run-command: ## Runs a command on the live deployed Fly app (must set command='your-command-here')
+	flyctl ssh console -C "${command}"
 
 # Doc and changelog commands
 build-changelog: ## Builds an updated changelog

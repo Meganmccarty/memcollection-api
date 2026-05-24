@@ -1,8 +1,8 @@
 from wagtail.api.v2.views import BaseAPIViewSet
 
+from core.utils.helpers import get_fields
 from pages.models import SpeciesPage
 from pages.serializers import SpeciesPageSerializer
-from utils.helpers import get_fields
 
 
 class SpeciesPagesAPIViewSet(BaseAPIViewSet):

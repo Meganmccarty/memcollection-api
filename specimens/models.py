@@ -5,10 +5,10 @@ from django.db import models
 from wagtail.fields import RichTextField
 from wagtail.search import index
 
+from core.models import TimeStampMixin
+from core.utils.insect_attributes import Sex, Stage
 from geography.models import CollectingTrip, Country, County, GPS, Locality, State
-from mixins.models import TimeStampMixin
 from taxonomy.models import Genus, Family, Order, Species, Subfamily, Subspecies, Tribe
-from utils.insect_attributes import Sex, Stage
 
 
 class Person(index.Indexed, TimeStampMixin):
@@ -145,6 +145,7 @@ class SpecimenRecord(TimeStampMixin):
         max_length=15,
         verbose_name="Unique Specimen Identifier",
         help_text="Enter the specimen's unique identifier number",
+        unique=True,
     )
 
     # Taxonomy fields

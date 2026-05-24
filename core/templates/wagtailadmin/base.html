@@ -1,0 +1,12 @@
+{% extends "wagtailadmin/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/memcollection.css' %}">
+{% endblock extra_css %}
+
+{% block branding_logo %}
+    <div class="sidebar-wagtail-branding__icon-wrapper w-transition-all w-duration-150">
+        {% include "logo.html" %}
+    </div>
+{% endblock %}

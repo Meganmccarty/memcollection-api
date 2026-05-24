@@ -1,0 +1,127 @@
+:root {
+    --w-color-surface-page: light-dark(#ffffff, #262626);
+    --w-color-text-context: light-dark(#262626, #F6F6F8);
+    --w-color-text-link-default: light-dark(#027D7E, #06B0B1);
+    --w-color-text-link-hover: light-dark(#005B5E, #81D7D8);
+    --w-color-focus: #05A885;
+    --w-color-border-furniture: light-dark(#E0E0E0, #333333);
+}
+
+html {
+    box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+body {
+    margin: 0 auto;
+    max-width: 65rem;
+}
+
+img {
+    max-width: 100px;
+}
+
+h1,
+h2,
+p,
+ul {
+    padding: 0;
+    margin: 0;
+    font-weight: 400;
+}
+
+.template-homepage {
+    background-color: var(--w-color-surface-page);
+    color: var(--w-color-text-context);
+    font-family: Lato,"Helvetica Neue",Arial,Helvetica,sans-serif;
+    font-weight: 400;
+}
+
+.template-homepage a {
+    color: var(--w-color-text-link-default);
+    font-size: 1.25rem;
+    padding: 0.25rem 0;
+}
+
+.template-homepage a:hover {
+    color: var(--w-color-text-link-hover);
+}
+
+.template-homepage a:focus-visible {
+    outline: 3px solid var(--w-color-focus);
+}
+
+.template-homepage .h1-container {
+    align-items: center;
+    border-bottom: 1px solid var(--w-color-border-furniture);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 2rem 0 0;
+    padding: 0 0 2rem;
+    width: 100%;
+}
+
+.template-homepage .h1-container svg {
+    height: 6.25rem;
+    width: 6.25rem;
+}
+
+.template-homepage h2 {
+    margin: 1.5rem auto;
+    text-align: center;
+    width: 100%;
+}
+
+.template-homepage .large-p-text {
+    font-size: 1.25rem;
+    padding: 0 6rem;
+    margin: 0 0 4rem 0;
+    text-align: center;
+    width: 100%;
+}
+
+.template-homepage ul {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    list-style: none;
+    width: 100%;
+}
+
+.template-homepage ul li {
+    display: flex;
+    flex-direction: column;
+    margin: 0.5rem;
+    width: 12.5rem;
+}
+
+.template-homepage ul li .link {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    margin: 0 0 0.125rem 0;
+}
+
+.template-homepage ul li .link svg {
+    height: 1.25rem;
+    margin: 0 0.25rem 0 0;
+    width: 1.25rem;
+}
+
+.template-homepage footer {
+    align-items: center;
+    border-top: 1px solid var(--w-color-border-furniture);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 1.5rem 0 2rem;
+    padding: 2rem 0 0;
+    width: 100%;
+}

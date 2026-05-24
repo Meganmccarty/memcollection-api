@@ -1,11 +1,12 @@
 from wagtail.admin.ui.tables import UpdatedAtColumn
-from wagtail.snippets.views.snippets import SnippetViewSet, SnippetViewSetGroup
+from wagtail.snippets.views.snippets import SnippetViewSetGroup
 from wagtail.snippets.models import register_snippet
 
+from core.views import SnippetWithCustomDeleteViewSet
 from taxonomy.models import Family, Genus, Order, Species, Subfamily, Subspecies, Tribe
 
 
-class OrderSnippet(SnippetViewSet):
+class OrderSnippet(SnippetWithCustomDeleteViewSet):
     """A snippet for the Order model."""
 
     model = Order
@@ -17,7 +18,7 @@ class OrderSnippet(SnippetViewSet):
     list_per_page = 50
 
 
-class FamilySnippet(SnippetViewSet):
+class FamilySnippet(SnippetWithCustomDeleteViewSet):
     """A snippet for the family model."""
 
     model = Family
@@ -29,7 +30,7 @@ class FamilySnippet(SnippetViewSet):
     list_per_page = 100
 
 
-class SubfamilySnippet(SnippetViewSet):
+class SubfamilySnippet(SnippetWithCustomDeleteViewSet):
     """A snippet for the subfamily model."""
 
     model = Subfamily
@@ -41,7 +42,7 @@ class SubfamilySnippet(SnippetViewSet):
     list_per_page = 100
 
 
-class TribeSnippet(SnippetViewSet):
+class TribeSnippet(SnippetWithCustomDeleteViewSet):
     """A snippet for the tribe model."""
 
     model = Tribe
@@ -53,7 +54,7 @@ class TribeSnippet(SnippetViewSet):
     list_per_page = 100
 
 
-class GenusSnippet(SnippetViewSet):
+class GenusSnippet(SnippetWithCustomDeleteViewSet):
     """A snippet for the genus model."""
 
     model = Genus
@@ -65,7 +66,7 @@ class GenusSnippet(SnippetViewSet):
     list_per_page = 100
 
 
-class SpeciesSnippet(SnippetViewSet):
+class SpeciesSnippet(SnippetWithCustomDeleteViewSet):
     """A snippet for the species model."""
 
     model = Species
@@ -86,7 +87,7 @@ class SpeciesSnippet(SnippetViewSet):
     list_per_page = 100
 
 
-class SubspeciesSnippet(SnippetViewSet):
+class SubspeciesSnippet(SnippetWithCustomDeleteViewSet):
     """A snippet for the subspecies model."""
 
     model = Subspecies

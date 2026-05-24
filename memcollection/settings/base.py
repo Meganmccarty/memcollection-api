@@ -21,7 +21,7 @@ PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
 
 # Project version
-VERSION = "0.11.1"
+VERSION = "0.12.0"
 
 
 # Quick-start development settings - unsuitable for production
@@ -34,6 +34,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # Application definition
 
 INSTALLED_APPS = [
+    "core",
     "geography",
     "home",
     "images",
@@ -87,8 +88,11 @@ TEMPLATES = [
         "DIRS": [
             os.path.join(PROJECT_DIR, "templates"),
         ],
-        "APP_DIRS": True,
         "OPTIONS": {
+            "loaders": [
+                "django.template.loaders.app_directories.Loader",
+                "django.template.loaders.filesystem.Loader",
+            ],
             "context_processors": [
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
@@ -169,7 +173,7 @@ STORAGES = {
 
 # Wagtail settings
 
-WAGTAIL_SITE_NAME = "memcollection"
+WAGTAIL_SITE_NAME = "MEM Collection"
 WAGTAILAPI_LIMIT_MAX = None
 WAGTAILIMAGES_IMAGE_MODEL = "images.CustomImage"
 

@@ -1,10 +1,11 @@
-from wagtail.snippets.views.snippets import SnippetViewSet, SnippetViewSetGroup
+from wagtail.snippets.views.snippets import SnippetViewSetGroup
 from wagtail.snippets.models import register_snippet
 
+from core.views import SnippetWithCustomDeleteViewSet
 from images.models import HabitatImage, InsectImage, PlantImage, SpecimenRecordImage
 
 
-class SpecimenRecordImageSnippet(SnippetViewSet):
+class SpecimenRecordImageSnippet(SnippetWithCustomDeleteViewSet):
     """A snippet for the SpecimenRecordImage model."""
 
     model = SpecimenRecordImage
@@ -13,7 +14,7 @@ class SpecimenRecordImageSnippet(SnippetViewSet):
     menu_name = "specimen_record_images"
 
 
-class InsectImageSnippet(SnippetViewSet):
+class InsectImageSnippet(SnippetWithCustomDeleteViewSet):
     """A snippet for the InsectImage model."""
 
     model = InsectImage
@@ -22,7 +23,7 @@ class InsectImageSnippet(SnippetViewSet):
     menu_name = "insect_images"
 
 
-class PlantImageSnippet(SnippetViewSet):
+class PlantImageSnippet(SnippetWithCustomDeleteViewSet):
     """A snippet for the PlantImage model."""
 
     model = PlantImage
@@ -31,7 +32,7 @@ class PlantImageSnippet(SnippetViewSet):
     menu_name = "plant_images"
 
 
-class HabitatImageSnippet(SnippetViewSet):
+class HabitatImageSnippet(SnippetWithCustomDeleteViewSet):
     """A snippet for the HabitatImage model."""
 
     model = HabitatImage
