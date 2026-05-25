@@ -3,28 +3,31 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-MEM Collection API
-==================
+MEM Collection
+==============
+
+Welcome to the documentation for my project!
 
 MEM Collection is a (perpetual work-in-progress) project where I manage my personal entomology
-collection and my personal photo collection of live specimens. This repo represents the backend API
-of the project and uses `headless Wagtail <https://wagtail.org/headless/>`_ for managing the project's
-content. There are older versions of MEM Collection in different repos using different versions of
-plain `Django <https://www.djangoproject.com/>`_; while I love Django, I have found working with and
-in Wagtail's admin interface to be an even more pleasant experience. It's easier for me to start
-fresh than try to update an older repo that wasn't well maintained.
+collection. It's currently a static website powered by a headless CMS and API.
 
-As I've said, this is a perpetual, work-in-progress project. Hopefully, this is the last time I
-recreate this project from scratch...
+The project started out as a way for me to manage the data associated with my specimens and expanded
+into a label generator, a storage place for my collection of live insect photographs, and a platform
+to view the data associated with each specimen (including maps pinpointing collection sites).
+
+The backend is powered by `headless Wagtail <https://wagtail.org/headless/>`_, while the frontend
+is built with `Eleventy.js <https://www.11ty.dev/>`_. While a static site generator may not be the best
+choice for a website powered by an API, I got tired of working with client-side JavaScript
+libraries/frameworks. And while many JS frameworks are now shifting to server-side rendering (e.g.,
+Next.js), I just wanted something simple. Something fast. And Eleventy fit that perfectly for me.
+
+The docs are split between the backend and frontend areas (with the backend being better documented
+at the moment). If you want to try running this project locally, you'll need to clone both repos
+for the optimal experience.
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-   getting-started
-   developing
-   cicd
-   deploying
-   backups
-   changelog
-   reference/index
+   backend/index
+   frontend/index

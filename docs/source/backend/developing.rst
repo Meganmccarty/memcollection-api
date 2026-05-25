@@ -1,5 +1,5 @@
-Developing
-==========
+Developing - Backend
+====================
 
 Creating a New Django app
 -------------------------
@@ -82,8 +82,7 @@ locally by running
     make build-docs
 
 This will create a ``build/`` folder under ``docs/``. Opening ``build/html/index.html`` in your
-browser of choice will allow you to navigate through the docs as though they are hosted on a server
-or S3 bucket.
+browser of choice will allow you to navigate through the docs.
 
 Changelog
 ---------
@@ -95,7 +94,7 @@ auto-generate a changelog based on my git history. The changelog can be generate
 
     make build-changelog
 
-This will output a file, ``changelog.md``, under ``docs/source/``. Sphinx is configured to
+This will output a file, ``changelog.md``, under ``docs/backend/source/``. Sphinx is configured to
 incorporate this file within the generated docs.
 
 .. note:: auto-changelog doesn't include PRs I create, so I need to manually add my PRs to the
