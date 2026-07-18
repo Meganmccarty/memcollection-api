@@ -147,10 +147,15 @@ class SpecimenRecordSnippet(SnippetWithCustomDeleteViewSet):
                         FieldPanel("year"),
                     ]
                 ),
-                FieldPanel("collector"),
                 FieldRowPanel(
                     [
+                        FieldPanel("collector"),
                         FieldPanel("method"),
+                    ]
+                ),
+                FieldRowPanel(
+                    [
+                        FieldPanel("weather"),
                         FieldPanel("temperature"),
                         FieldPanel("time_of_day"),
                     ]

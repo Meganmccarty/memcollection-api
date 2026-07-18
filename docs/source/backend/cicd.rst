@@ -9,4 +9,4 @@ commands under ``.github/workflows/test.yaml``.
 The linting and formatting commands are slightly different in the CI/CD compared to the ones you run
 locally. With linting, the total number of issues found will be outputted in the terminal. With
 formatting, Black will just check for issues, not automatically fix them. Any issues found would
-need to be fixed, committed, and pushed, and GitHub Actions will rerun the commands.
+need to be manually fixed, committed, and pushed, and GitHub Actions will rerun the commands.

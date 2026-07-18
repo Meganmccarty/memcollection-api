@@ -1,9 +1,8 @@
-Getting Started
-===============
+Getting Started - Backend
+=========================
 
 This project will likely be something no one else will want to play with, but the steps to getting a
-local working copy up and running are below. (It's also good practice for me to thoroughly document
-my code, as I am very liable to forget stuff.)
+local working copy up and running are below.
 
 First, clone this repo from GitHub:
 
@@ -29,6 +28,16 @@ After creating the ``.env`` file, add the following variables to it:
 
 You can use a `secret key generator <https://djecrety.ir/>`_ for the ``SECRET_KEY`` value.
 
+Make
+----
+
+These docs assume you have `GNU Make <https://www.gnu.org/software/make/>`_ installed on your
+machine. While not required, it makes running commands much easier. You can see a complete list of
+all the available commands (and what they do) by running ``make help``. (If you don't want to
+install Make, you can always reference
+`this project's Makefile <https://github.com/Meganmccarty/memcollection-api/blob/main/Makefile>`_
+and copy/paste the actual commands you wish to run from the list.)
+
 Docker
 ------
 
@@ -36,9 +45,6 @@ This project uses `Docker Compose <https://docs.docker.com/compose/>`_ to manage
 the Wagtail web app, and another for the Postgres database). You'll need to install
 `Docker Desktop <https://www.docker.com/products/docker-desktop/>`_ in order to start the
 containers.
-
-I have a Makefile set up for running all of the various commands referenced through these docs. If
-you want a complete list of all the available commands and what they do, just run ``make help``.
 
 Building/Starting Containers
 ****************************
@@ -48,6 +54,9 @@ To get the containers up and running, execute the following two commands in your
 .. code::
 
     make build
+
+.. code::
+
     make up
 
 After the containers are up, you should find that two services have been created: one for the
@@ -60,6 +69,9 @@ terminal:
 .. code::
 
     make migrations
+
+.. code::
+
     make migrate
 
 You'll then need to create a user account to access the Wagtail admin. In the terminal, run:
@@ -71,6 +83,17 @@ You'll then need to create a user account to access the Wagtail admin. In the te
 You should then be prompted in the terminal for credentials. You can press enter to select the
 defaults (user = 'wagtail', email = '') and input a password. Afterwards, use your newly-created
 user account to log into the Wagtail admin at http://localhost:8000/admin.
+
+Customizing the Home Page
+#########################
+
+If you want to change the way the home page looks, you can edit the ``home_page.html`` file under
+``memcollection/templates/home/``. The styles and icons are located under
+``memcollection/static/css/`` and ``memcollection/static/images/``, respectively. If you want to
+change the custom butterfly logo I use throughout the application, replace the two SVG files within
+``memcollection/templates/logo.html`` with your own; the top one is a black logo, while the bottom
+one adjusts to whatever color the surrounding text is (thus, it respects your operating system's
+preference for light or dark mode).
 
 Stopping/Destroying Containers
 ******************************
@@ -113,17 +136,16 @@ Project Structure
 -----------------
 
 This project follows typical Django and Wagtail organizational patterns. Code that handles a
-specific area is contained within its own "app". Some of the apps come by default with Wagtail, and
-I haven't removed them or changed them (but keeping in case I end up utilizing them down the road).
+specific area is contained within its own "app". Some of the apps come by default with Wagtail.
 
 .. code::
 
     memcollection-api/          Project root
     |--core/                    App containing shared utilities, models, and views
-       |--templates/            Contains templates that override Wagtail's defaults (must be contained in an app)
+       |--templates/            Contains templates that override Wagtail's defaults
     |--docs/                    Where these docs are located
     |--geography/               App for geography models, snippets, serializers, etc.
-    |--home/                    Default Wagtail app (not currently used)
+    |--home/                    Default Wagtail app (only using the template for the home page)
     |--images/                  App for image models, snippets, serializers, etc. This is NOT a default app (it is for my live insect photos)
     |--memcollection/           Default Django directory for things like settings and static files
        |--templates/            All other templates are here
@@ -131,6 +153,11 @@ I haven't removed them or changed them (but keeping in case I end up utilizing t
     |--search/                  Default Wagtail app (not currently used)
     |--specimens/               App for specimen models, snippets, serializers, etc.
     |--taxonomy/                App for taxonomy models, snippets, serializers, etc.
+
+As noted above, there are two places where templates are located; within ``memcollection/templates``
+and within ``core/templates/``. I'd have preferred to keep them all within
+``memcollection/templates/``, but Wagtail requires templates that override its admin to be placed
+within an app (and ``memcollection`` is not an app).
 
 Loading in Sample Data
 ----------------------
@@ -152,6 +179,6 @@ command to create species pages for the species that were added from the fixture
 Interacting with the Frontend
 -----------------------------
 
-This project only contains the backend of my application (as it is a headless CMS with an API),
-though if you want to play with the frontend piece of my project, then you can `check out the
-README for it on GitHub. <https://github.com/Meganmccarty/memcollection-site>`_
+While you can do a lot with the backend alone (as it is a CMS!), you can optionally spin up the
+frontend too to see the data on the site. You can
+`read the docs on how to get started with my frontend <https://docs.memcollection.com/frontend/getting-started.html>`_.

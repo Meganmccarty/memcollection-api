@@ -18,7 +18,6 @@ django.setup()
 project = "MEM Collection API"
 copyright = "2026, Megan McCarty"
 author = "Megan McCarty"
-release = "0.12.0"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -52,7 +51,7 @@ footer_links = ",".join(
 html_theme = "sphinx_wagtail_theme"
 html_theme_options = {
     "project_name": "MEM Collection API",
-    "logo": "img/logo-white.png",
+    "logo": "img/logo.svg",
     "github_url": "https://github.com/Meganmccarty/memcollection-api/",
     "footer_links": footer_links,
 }

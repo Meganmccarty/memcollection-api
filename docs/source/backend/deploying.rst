@@ -36,13 +36,14 @@ so led to deployment errors. I then found and used
 `Tom Usher's blog series on deploying Wagtail to Fly.io <https://usher.dev/posts/2022-08-30-wagtail-on-flyio/part-1/>`_
 to get me over the hump of deployment errors.
 
-After the initial setup is done, you can run
+After the initial setup is done, you can run the following command to authenticate (if you aren't
+currently authenticated)
 
 .. code::
 
     make fly-auth
 
-to authenticate (if you aren't already authenticated). Once that's done, you can deploy by running
+Once that's done, you can deploy by running
 
 .. code::
 
