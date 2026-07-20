@@ -331,6 +331,8 @@ class SpecimenRecord(TimeStampMixin):
         TRAP = "Trap", "Trap"
         UV_TRAP = "UV trap", "UV trap"
         LIGHT = "Light", "Light"
+        LED_LIGHT = "LED light", "LED light"
+        LED_LIGHT_SHEET = "LED light sheet", "LED light sheet"
         MV_LIGHT = "MV light", "MV light"
         MV_LIGHT_SHEET = "MV light sheet", "MV light sheet"
         UV_LIGHT = "UV light", "UV light"
