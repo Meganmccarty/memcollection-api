@@ -17,11 +17,21 @@ class PersonTestCase(TestCase):
     def test_collector_name(self):
         """Ensures the collector_name property is formatted correctly."""
 
-        no_suffix = Person.objects.get(first_name="Megan", last_name="McCarty")
-        all_fields = Person.objects.get(first_name="Paul", last_name="Smith")
+        no_suffix = Person.objects.get(
+            first_name="Megan", middle_initial="E", last_name="McCarty"
+        )
+        no_middle = Person.objects.get(
+            first_name="Thomas", last_name="Williams", suffix="III"
+        )
+        no_middle_no_suffix = Person.objects.get(first_name="Jane", last_name="Doe")
+        all_fields = Person.objects.get(
+            first_name="Paul", middle_initial="A", last_name="Smith", suffix="Jr."
+        )
 
-        self.assertEqual(no_suffix.collector_name, "M. McCarty")
-        self.assertEqual(all_fields.collector_name, "P. Smith Jr.")
+        self.assertEqual(no_suffix.collector_name, "M.E. McCarty")
+        self.assertEqual(no_middle.collector_name, "T. Williams III")
+        self.assertEqual(no_middle_no_suffix.collector_name, "J. Doe")
+        self.assertEqual(all_fields.collector_name, "P.A. Smith Jr.")
 
     def test_full_name(self):
         """Ensures a Person object's full name is returned."""
@@ -140,10 +150,10 @@ class SpecimenRecordTestCase(TestCase):
             collector__last_name="McCarty"
         ).distinct()[0]
 
-        self.assertEqual(specimen_single_collector.collectors, "M. McCarty")
+        self.assertEqual(specimen_single_collector.collectors, "M.E. McCarty")
         self.assertEqual(
             specimen_multiple_collectors.collectors,
-            "J. Doe, M. McCarty, P. Smith Jr., T. Williams III",
+            "J. Doe, M.E. McCarty, P.A. Smith Jr., T. Williams III",
         )
 
     def test_temp_F(self):
