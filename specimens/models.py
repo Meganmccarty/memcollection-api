@@ -63,12 +63,14 @@ class Person(index.Indexed, TimeStampMixin):
     def collector_name(self):
         """A person's name formatted for a specimen label.
 
-        The format is a person's first initial, last name, and suffix (if they have one).
+        The format is a person's first initial, middle initial (if they have one), last name, and
+        suffix (if they have one).
         """
 
         first_initial = self.first_name[0]
+        middle_initial = f"{self.middle_initial}." if self.middle_initial else ""
         suffix = f" {self.suffix}" if self.suffix else ""
-        return f"{first_initial}. {self.last_name}{suffix}"
+        return f"{first_initial}.{middle_initial} {self.last_name}{suffix}"
 
     @property
     def full_name(self):
@@ -331,6 +333,8 @@ class SpecimenRecord(TimeStampMixin):
         TRAP = "Trap", "Trap"
         UV_TRAP = "UV trap", "UV trap"
         LIGHT = "Light", "Light"
+        LED_LIGHT = "LED light", "LED light"
+        LED_LIGHT_SHEET = "LED light sheet", "LED light sheet"
         MV_LIGHT = "MV light", "MV light"
         MV_LIGHT_SHEET = "MV light sheet", "MV light sheet"
         UV_LIGHT = "UV light", "UV light"
