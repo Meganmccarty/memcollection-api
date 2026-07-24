@@ -46,7 +46,7 @@ class Command(BaseCommand):
 
             for specimen in specimens:
                 # Check if file exists on disk
-                if not specimen.qr_code or not os.path.exists(specimen.qr_code.path):
+                if not specimen.qr_code or not specimen.qr_code.storage.exists(specimen.qr_code.name):
                     missing_specimens.append(specimen)
 
             if missing_specimens:
