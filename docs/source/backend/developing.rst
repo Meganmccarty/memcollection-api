@@ -140,13 +140,13 @@ To start a release, simply run
 
     git flow release start x.y.z
 
-Make sure to update the version number in ``docs/source/conf.py``,
-``memcollection/settings/base.py``, and ``package.json`` and commit those changes:
+Make sure to update the version number in ``memcollection/settings/base.py`` and ``package.json``
+and commit those changes:
 
 .. code::
 
     git add .
-    git commit -m "Bump version in docs/source/conf.py, memcollection/settings/base.py, and package.json"
+    git commit -m "Bump version in memcollection/settings/base.py and package.json"
 
 Next, update the changelog by running
 
