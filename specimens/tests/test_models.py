@@ -74,6 +74,29 @@ class SpecimenRecordTestCase(TestCase):
         specimen = SpecimenRecord.objects.get(usi="MEM-000001")
         self.assertEqual(specimen.__str__(), "MEM-000001")
 
+    def test_generate_short_code_from_usi(self):
+        """Ensures a short code is generated for a specimen based on the USI."""
+
+        specimen = SpecimenRecord.objects.get(usi="MEM-000001")
+        specimen.generate_short_code()
+        self.assertEqual(specimen.short_code, "mem000001")
+
+    def test_generate_qr_code_filename(self):
+        """Ensures a QR code is generated with the format 'qr_codes/qr_{usi}***.png'."""
+
+        specimen = SpecimenRecord.objects.get(usi="MEM-000001")
+        specimen.generate_qr_code()
+        self.assertTrue(specimen.qr_code.name.startswith("qr_codes/qr_mem-000001"))
+        self.assertTrue(specimen.qr_code.name.endswith(".png"))
+
+    def test_generate_qr_code_calls_generate_short_code(self):
+        """Ensures a short code is generated when a QR code is generated for a specimen."""
+
+        specimen = SpecimenRecord.objects.get(usi="MEM-000001")
+        self.assertFalse(specimen.short_code)
+        specimen.generate_qr_code()
+        self.assertEqual(specimen.short_code, "mem000001")
+
     def test_identified(self):
         """Ensures the identified property returns the correct boolean state."""
 

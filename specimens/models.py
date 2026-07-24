@@ -1,7 +1,10 @@
 import datetime
+import qrcode
 
+from django.core.files.base import ContentFile
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from io import BytesIO
 from wagtail.fields import RichTextField
 from wagtail.search import index
 
@@ -404,6 +407,10 @@ class SpecimenRecord(TimeStampMixin):
         default="", blank=True, help_text="Enter any other notes about the specimen"
     )
 
+    # QR code fields for barcoding and data preservation
+    short_code = models.CharField(max_length=20, unique=True, blank=True, null=True)
+    qr_code = models.ImageField(upload_to="qr_codes/", blank=True, null=True)
+
     class Meta:
         ordering = ["usi"]
 
@@ -414,6 +421,39 @@ class SpecimenRecord(TimeStampMixin):
             A string that refers to a SpecimenRecord object instance.
         """
         return self.usi
+
+    def generate_short_code(self):
+        """Generates a short code for a specimen that can be used in a shortened URL.
+
+        Example: MEM-000001 -> mem000001
+        """
+
+        self.short_code = self.usi.lower().replace("-", "")
+
+    def generate_qr_code(self):
+        """Generates a QR code for a specimen that, when scanned with a smart phone's camera,
+        will take the user to the frontend page for that specimen."""
+
+        self.generate_short_code()
+
+        short_url = f"api.memcollection.com/{self.short_code}"
+
+        qr = qrcode.QRCode(
+            version=1,
+            error_correction=qrcode.constants.ERROR_CORRECT_M,
+            box_size=10,
+            border=1,
+        )
+        qr.add_data(short_url)
+        qr.make(fit=True)
+
+        img = qr.make_image(fill_color="black", back_color="white")
+        img_io = BytesIO()
+        img.save(img_io, format="PNG")
+        img_io.seek(0)
+
+        filename = f"qr_{self.usi.lower()}.png"
+        self.qr_code.save(filename, ContentFile(img_io.read()), save=False)
 
     @property
     def identified(self):

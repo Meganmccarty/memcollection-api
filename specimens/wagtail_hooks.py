@@ -1,5 +1,6 @@
 from wagtail import hooks
 from wagtail.admin.ui.tables import UpdatedAtColumn
+from wagtail.admin.menu import AdminOnlyMenuItem
 from wagtail.admin.panels import FieldPanel, FieldRowPanel, MultiFieldPanel
 from wagtail.snippets.views.snippets import SnippetViewSetGroup
 from wagtail.snippets.models import register_snippet
@@ -162,6 +163,12 @@ class SpecimenRecordSnippet(SnippetWithCustomDeleteViewSet):
                 ),
                 FieldPanel("habitat"),
                 FieldPanel("notes"),
+                FieldRowPanel(
+                    [
+                        FieldPanel("short_code", read_only=True),
+                        FieldPanel("qr_code"),
+                    ]
+                ),
             ],
             heading="Locality Details",
         ),
@@ -184,3 +191,12 @@ class SpecimensViewSetGroup(SnippetViewSetGroup):
 
 # Registers all of the snippets grouped under the SpecimensViewSetGroup
 register_snippet(SpecimensViewSetGroup)
+
+
+@hooks.register("register_admin_menu_item")
+def register_export_qr_codes_menu_item():
+    return AdminOnlyMenuItem(
+        label="Export QR Codes",
+        url="/admin/export-qr-codes/",
+        icon_name="download",
+    )
