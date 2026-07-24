@@ -10,6 +10,8 @@ Models
 .. autoclass:: specimens.models.SpecimenRecord
 
     .. automethod:: __str__
+    .. automethod:: generate_short_code
+    .. automethod:: generate_qr_code
     .. autoattribute:: identified
     .. autoattribute:: collected_date
     .. autoattribute:: full_date
