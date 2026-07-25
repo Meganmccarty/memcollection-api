@@ -1,4 +1,4 @@
-from wagtail.api.v2.views import BaseAPIViewSet
+import os
 
 from core.utils.helpers import get_fields
 from django.contrib.admin.views.decorators import staff_member_required
@@ -7,6 +7,8 @@ from django.shortcuts import redirect
 from io import BytesIO
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
+from wagtail.api.v2.views import BaseAPIViewSet
+
 from specimens.filters import SpecimenRecordFilter
 from specimens.models import Person, SpecimenRecord
 from specimens.serializers import PersonSerializer, SpecimenRecordSerializer
@@ -93,14 +95,25 @@ def export_qr_codes_pdf(request):
         qr_y = y + (label_height - qr_size) - 2
 
         if specimen.qr_code:
-            c.drawImage(
-                specimen.qr_code.path,
-                qr_x,
-                qr_y,
-                width=qr_size,
-                height=qr_size,
-                preserveAspectRatio=True,
-            )
+            if os.getenv('ENVIRONMENT') == 'prod':
+                qr_file = BytesIO(specimen.qr_code.read())
+                c.drawImage(
+                    qr_file,
+                    qr_x,
+                    qr_y,
+                    width=qr_size,
+                    height=qr_size,
+                    preserveAspectRatio=True,
+                )
+            else:
+                c.drawImage(
+                    specimen.qr_code.path,
+                    qr_x,
+                    qr_y,
+                    width=qr_size,
+                    height=qr_size,
+                    preserveAspectRatio=True,
+                )
 
         # Put specimen usi as text below QR code
         c.setFont("Helvetica", 3)
