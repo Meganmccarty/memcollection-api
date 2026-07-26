@@ -127,19 +127,21 @@ navigate to the Secrets page, and click "Deploy Secrets" for the changes to take
 Automatic Backups
 -----------------
 
-.. note:: The 'automatic' part of these backups isn't currently working, as GitHub Actions doesn't
-    seem to prioritize my my scheduled workflow. For now, the job can be executed manually within
-    GitHub Actions. In the future, I plan to utilize `cron-job.org <https://cron-job.org/>`_ to
-    ensure that backups are indeed automatic!
-
-I've also set up a scheduled cron job in GitHub Actions that backs up the prod database in Neon
-every night (using ``pg_dump``) and stores the file in a Backblaze B2 bucket (you can view the
+I've set up a scheduled cron job via `cron-job.org <https://cron-job.org/>`_ that triggers a GitHub
+Action to back up the Neon prod database to a Backblaze B2 bucket every night (you can view the
 `GitHub Action file over in GitHub <https://github.com/Meganmccarty/memcollection-api/blob/main/.github/workflows/nightly-db-backup.yaml>`_).
-This assumes you've installed the `aws cli <https://aws.amazon.com/cli/>`_; you've created a
-private, encrypted bucket (with object lock disabled) in the B2 console; you've created a new app
-key and given it access only to the new bucket; and you've saved the app key credentials in both
-GitHub Secrets and locally within an aws cli profile. You'll also want to make a note of the
-bucket's region and endpoint url (again, for both GitHub Secrets and the aws cli).
+Backups created in this manner are formatted as ``nightly-prod-backup-<time-stamp>.backup`` (to
+distinguish them from manual backups). The cron job is set to run at 12:00 AM EST.
+
+To restore from these backups, you'll need the following already configured:
+* you've installed the `aws cli <https://aws.amazon.com/cli/>`_
+* you've created a private, encrypted bucket (with object lock disabled) in the B2 console
+* you've created a new app key and given it access only to the new bucket
+* and you've saved the app key credentials in both GitHub Secrets and locally within an aws cli
+  profile
+
+You'll also want to make a note of the bucket's region and endpoint url (again, for both GitHub
+Secrets and the aws cli).
 
 In the event that you need to use one of these backups, you first have to download it from
 Backblaze. First, log into Backblaze and navigate to the "Browse Files" link under "B2 Cloud
@@ -157,8 +159,9 @@ details you saved from earlier:
 
 This should make a copy of the file from Backblaze onto your local machine.
 
-Then, to restore it into Neon, follow the steps above for restoring a prod backup, and you should
-be set.
+You can either use this backup to restore your local database (so that it matches prod), or you can
+use it to restore a prod database (if you need to roll back to a previous state). The steps for
+doing either one of these tasks are listed in the sections above.
 
 Old Way: Using ``dumpdata`` and ``loaddata``
 --------------------------------------------
