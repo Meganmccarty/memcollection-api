@@ -16,6 +16,12 @@ class Command(BaseCommand):
             type=str,
             help="Generate for a specific specimen by usi",
         )
+        parser.add_argument(
+            '--range',
+            nargs=2,
+            metavar=('START_USI', 'END_USI'),
+            help='Generate for a range of specimens (e.g., MEM-000001 thru MEM-000100)',
+        )
 
     def handle(self, *args, **options):
         if options["usi"]:
@@ -31,6 +37,11 @@ class Command(BaseCommand):
                 self.stdout.write(
                     self.style.ERROR(f'Specimen {options["usi"]} not found')
                 )
+
+        elif options['range']:
+            # Generate for range of specimens
+            start_usi, end_usi = options['range']
+            self.generate_range(start_usi, end_usi)
 
         elif options["all"]:
             specimens = SpecimenRecord.objects.all()
@@ -58,6 +69,35 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.SUCCESS(f"\nGenerated {count} QR codes"))
             else:
                 self.stdout.write("All specimens have QR codes.")
+
+    def generate_range(self, start_usi, end_usi):
+        """Generate QR codes for a range of USIs"""
+        try:
+            # Extract numeric portions
+            start_num = int(start_usi.split('-')[1])
+            end_num = int(end_usi.split('-')[1])
+            prefix = start_usi.split('-')[0]
+            
+            self.stdout.write(f'Generating QR codes for {prefix}-{start_num:06d} to {prefix}-{end_num:06d}...')
+            
+            specimens = []
+            for num in range(start_num, end_num + 1):
+                usi = f"{prefix}-{num:06d}"
+                try:
+                    specimen = SpecimenRecord.objects.get(usi=usi)
+                    specimens.append(specimen)
+                except SpecimenRecord.DoesNotExist:
+                    self.stdout.write(self.style.WARNING(f'⚠ {usi} not found, skipping'))
+            
+            if specimens:
+                count = self.generate_for_specimens(specimens)
+                self.stdout.write(self.style.SUCCESS(f'\nGenerated {count} QR codes'))
+            else:
+                self.stdout.write(self.style.WARNING('No specimens found in range'))
+
+        except (ValueError, IndexError):
+            self.stdout.write(self.style.ERROR('Invalid USI format. Use format: MEM-000001 MEM-000100'))
+
 
     def generate_for_specimens(self, specimens):
         count = 0
