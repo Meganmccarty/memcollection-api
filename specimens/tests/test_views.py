@@ -1,55 +1,7 @@
-from django.test import Client, TestCase, override_settings
+from django.test import Client, TestCase
 from django.contrib.auth.models import User
 
 from specimens.models import SpecimenRecord
-
-
-@override_settings(
-    STATICFILES_STORAGE="django.contrib.staticfiles.storage.StaticFilesStorage",
-    DEBUG=True,
-    WHITENOISE_AUTOREFRESH=True,
-)
-class SpecimenShortRedirectTestCase(TestCase):
-    """A test case for the specimen_short_redirect view."""
-
-    fixtures = [
-        "countries.json",
-        "states.json",
-        "counties.json",
-        "localities.json",
-        "gps_coordinates.json",
-        "collecting_trips.json",
-        "orders.json",
-        "families.json",
-        "subfamilies.json",
-        "tribes.json",
-        "genera.json",
-        "species.json",
-        "subspecies.json",
-        "people.json",
-        "specimen_records.json",
-    ]
-
-    def setUp(self):
-        """Set up test data."""
-
-        self.client = Client()
-        self.specimen = SpecimenRecord.objects.get(usi="MEM-000001")
-        self.specimen.generate_short_code()
-        self.specimen.save()
-
-    def test_redirect_to_correct_url(self):
-        """Ensures a user is redirected to full specimen URL from short code."""
-
-        response = self.client.get(f"/{self.specimen.short_code}/", follow=False)
-        expected_url = "https://www.memcollection.com/specimens/mem-000001/"
-        self.assertRedirects(response, expected_url, fetch_redirect_response=False)
-
-    def test_redirect_nonexistent_specimen_raises_404(self):
-        """Ensures a Http404 is raised for a nonexistent specimen."""
-
-        response = self.client.get("/nonexistent/", follow=False)
-        self.assertEqual(response.status_code, 404)
 
 
 class ExportQrCodesToPdfTestCase(TestCase):

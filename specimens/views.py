@@ -2,8 +2,7 @@ import os
 
 from core.utils.helpers import get_fields
 from django.contrib.admin.views.decorators import staff_member_required
-from django.http import Http404, HttpResponse
-from django.shortcuts import redirect
+from django.http import HttpResponse
 from io import BytesIO
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
@@ -53,17 +52,6 @@ class SpecimenRecordAPIViewSet(BaseAPIViewSet):
             return filterset.qs.distinct()
 
         return queryset
-
-
-def specimen_short_redirect(request, short_code):
-    """Redirect short code URL to full specimen URL."""
-    try:
-        specimen = SpecimenRecord.objects.get(short_code=short_code)
-        return redirect(
-            f"https://www.memcollection.com/specimens/{specimen.usi.lower()}/"
-        )
-    except SpecimenRecord.DoesNotExist:
-        raise Http404("Specimen not found")
 
 
 @staff_member_required

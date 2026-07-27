@@ -15,7 +15,7 @@ There are two fields on the ``SpecimenRecord`` model that can be viewed in the W
 not meant to be edited manually: ``short_code`` and ``qr_code``.
 
 The ``short_code`` is just the unique specimen identifier (``usi``) lowercased and without the
-hyphen (so ``MEM-000001`` becomes ``mem000001``). This short code is used to generate a shortened
+hyphen (so ``MEM-000001`` becomes ``000001``). This short code is used to generate a shortened
 URL, as shorter URLs make it easier to generate a smaller QR code that is still scannable.
 
 The ``qr_code`` field is an ``ImageField`` that stores the generated QR code image. You are not
@@ -96,14 +96,9 @@ How the QR Codes Work
 
 Because I needed the QR codes to be small enough to fit on a specimen label, I needed to shorten the
 URLs encoded while still taking the user to the correct specimen page on the frontend when scanned.
+The URLs encoded in the QR codes are in the following format:
+``www.memcollection.com/s/{short_code}``. Navigating to a URL like this will redirect the user to
+the corresponding URL: ``https://www.memcollection.com/specimens/{full_usi}``.
 
-To accomplish this, I set up a redirect view (located in ``specimens/views.py``). The URLs encoded
-in the QR codes are in the following format: ``api.memcollection.com/{short_code}``. Navigating to a
-URL like this will redirect the user to the corresponding frontend URL:
-``https://www.memcollection.com/specimens/{full_usi}/``. Because this redirect service runs on
-the backend, these QR codes will only work so long as my backend service remains running (in other
-words, they will likely only be of use to me while I'm still around to keep the backend service up
-and running).
-
-
-
+The actual redirect lives in a ``.htaccess`` file within the Eleventy frontend. Because it's just a
+static file, if my backend server were to go down, the QR codes will still work.
