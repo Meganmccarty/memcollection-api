@@ -95,7 +95,7 @@ def export_qr_codes_pdf(request):
         qr_y = y + (label_height - qr_size) - 2
 
         if specimen.qr_code:
-            if os.getenv('ENVIRONMENT') == 'prod':
+            if os.getenv("ENVIRONMENT") == "prod":
                 qr_file = BytesIO(specimen.qr_code.read())
                 c.drawImage(
                     qr_file,
