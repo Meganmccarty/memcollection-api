@@ -22,5 +22,6 @@ page to get a copy of the code running locally on your machine.
    cicd
    deploying
    backups
+   qr-codes
    changelog
    reference/index
