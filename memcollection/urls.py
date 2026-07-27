@@ -9,7 +9,7 @@ from wagtail.documents import urls as wagtaildocs_urls
 # from wagtail_footnotes import urls as footnotes_urls
 
 from search import views as search_views
-from specimens.views import export_qr_codes_pdf, specimen_short_redirect
+from specimens.views import export_qr_codes_pdf
 from .api import api_router
 
 urlpatterns = [
@@ -20,7 +20,6 @@ urlpatterns = [
     # path("footnotes/", include(footnotes_urls)),
     path("search/", search_views.search, name="search"),
     path("api/v2/", api_router.urls),
-    path("<str:short_code>/", specimen_short_redirect, name="specimen_short_redirect"),
 ]
 
 

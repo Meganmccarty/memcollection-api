@@ -425,10 +425,10 @@ class SpecimenRecord(TimeStampMixin):
     def generate_short_code(self):
         """Generates a short code for a specimen that can be used in a shortened URL.
 
-        Example: MEM-000001 -> mem000001
+        Example: MEM-000001 -> 000001
         """
 
-        self.short_code = self.usi.lower().replace("-", "")
+        self.short_code = self.usi.split("-")[1]
 
     def generate_qr_code(self):
         """Generates a QR code for a specimen that, when scanned with a smart phone's camera,
@@ -436,7 +436,7 @@ class SpecimenRecord(TimeStampMixin):
 
         self.generate_short_code()
 
-        short_url = f"api.memcollection.com/{self.short_code}"
+        short_url = f"www.memcollection.com/s/{self.short_code}"
 
         qr = qrcode.QRCode(
             version=1,

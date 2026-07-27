@@ -40,6 +40,7 @@ down: ## Tears down the Docker containers
 prune: ## Prunes Docker system, containers, mages, and volumes
 	docker system prune; docker container prune; docker image prune; docker volume prune
 
+
 # Docker commands for M chip Macs
 mac-build: ## Builds Docker containers for the Wagtail app and Postgres database for M chip Macs
 	docker compose -f docker-compose.yaml -f docker-compose.mac-m.yaml build
@@ -49,6 +50,7 @@ mac-build-no-cache: ## Builds Docker containers without caching for M chip Macs
 
 mac-up: ## Builds and runs Docker containers for the Wagtail app and database for M chip Macs
 	docker compose -f docker-compose.yaml -f docker-compose.mac-m.yaml up
+
 
 # Wagtail commands
 makemigrations: ## Makes migrations of the Wagtail app within the Docker container
@@ -72,6 +74,7 @@ create-app: ## Creates new Django app (must set 'name=YOUR-APP-NAME')
 create-species-pages: ## Creates species pages for each species in the database (only creates pages for species that are missing them)
 	docker compose run --rm web python manage.py create_species_pages
 
+
 # Data fixture commands
 dumpdata: ## Creates a JSON fixture from data in the database (must set 'model=app.Model' and 'output=app/fixtures/models.json')
 	docker compose run --rm web python manage.py dumpdata $(model) --output=$(output) --indent=4 --natural-foreign
@@ -83,6 +86,7 @@ load-fixtures: ## Loads all fixture data into the database
 	docker compose run --rm web python manage.py loaddata countries.json states.json counties.json localities.json \
 		gps_coordinates.json collecting_trips.json orders.json families.json subfamilies.json tribes.json genera.json \
 		species.json subspecies.json people.json specimen_records.json
+
 
 # Database backup and restore commands
 DB_NAME := ${DATABASE_NAME}
@@ -125,6 +129,21 @@ local-backup: ## Creates a JSON backup of the local database (but only of my mod
 local-restore: ## Loads a backup's data into the local database (must set 'filename=<filename>.json')
 	docker compose run --rm web python manage.py loaddata $(filename)
 
+
+# QR code generation commands
+generate-qr-codes: ## Generates QR codes for specimens that do not currently have QR codes
+	docker compose run --rm web python manage.py generate_qr_codes
+
+generate-qr-codes-all: ## Generates QR codes for all specimens, overwriting existing QR codes
+	docker compose run --rm web python manage.py generate_qr_codes --all
+
+generate-qr-code: ## Generates a QR code for a specific specimen (must set 'usi=<specimen-usi>')
+	docker compose run --rm web python manage.py generate_qr_codes --usi ${usi}
+
+generate-qr-codes-range: ## Generates QR codes for a range of specimens (must set 'start=<start-specimen-usi>' and 'end=<end-specimen-usi>')
+	docker compose run --rm web python manage.py generate_qr_codes --range ${start} ${end}
+
+
 # Linting, formatting, and testing commands
 lint: ## Lints Python code using flake8
 	docker compose run --rm web python -m flake8 .
@@ -140,6 +159,7 @@ test-deprecation: ## Tests Python code and includes deprecation warnings
 
 coverage: ## Shows test coverage
 	docker compose run --rm web coverage report -m --omit=*/migrations/*,*/tests/*
+
 
 # Deploy commands
 fly-auth: ## Authenticates to Fly.io

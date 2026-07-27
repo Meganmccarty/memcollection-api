@@ -1,6 +1,8 @@
 name: Fly Deploy
 on:
-  push:
+  workflow_run:
+    workflows: ["Lint, Format, Test"]
+    types: [completed]
     branches:
       - main
 
