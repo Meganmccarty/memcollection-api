@@ -1,4 +1,5 @@
 import os
+import tempfile
 
 from core.utils.helpers import get_fields
 from django.contrib.admin.views.decorators import staff_member_required
@@ -85,14 +86,21 @@ def export_qr_codes_pdf(request):
         if specimen.qr_code:
             if os.getenv("ENVIRONMENT") == "prod":
                 qr_file = BytesIO(specimen.qr_code.read())
+                with tempfile.NamedTemporaryFile(
+                    suffix=".png", delete=False
+                ) as tmp_file:
+                    tmp_file.write(qr_file.read())
+                    tmp_path = tmp_file.name
+
                 c.drawImage(
-                    qr_file,
+                    tmp_path,
                     qr_x,
                     qr_y,
                     width=qr_size,
                     height=qr_size,
                     preserveAspectRatio=True,
                 )
+                os.unlink(tmp_path)
             else:
                 c.drawImage(
                     specimen.qr_code.path,
