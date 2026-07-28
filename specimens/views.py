@@ -86,10 +86,12 @@ def export_qr_codes_pdf(request):
         if specimen.qr_code:
             if os.getenv("ENVIRONMENT") == "prod":
                 qr_file = BytesIO(specimen.qr_code.read())
-                with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp_file:
+                with tempfile.NamedTemporaryFile(
+                    suffix=".png", delete=False
+                ) as tmp_file:
                     tmp_file.write(qr_file.read())
                     tmp_path = tmp_file.name
-                
+
                 c.drawImage(
                     tmp_path,
                     qr_x,
