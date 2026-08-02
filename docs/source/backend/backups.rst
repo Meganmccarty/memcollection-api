@@ -137,8 +137,7 @@ To restore from these backups, you'll need the following already configured:
 * you've installed the `aws cli <https://aws.amazon.com/cli/>`_
 * you've created a private, encrypted bucket (with object lock disabled) in the B2 console
 * you've created a new app key and given it access only to the new bucket
-* and you've saved the app key credentials in both GitHub Secrets and locally within an aws cli
-  profile
+* and you've saved the app key credentials in both GitHub Secrets and locally within an aws cli profile
 
 You'll also want to make a note of the bucket's region and endpoint url (again, for both GitHub
 Secrets and the aws cli).
