@@ -21,7 +21,7 @@ PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
 
 # Project version
-VERSION = "0.15.1"
+VERSION = "0.15.2"
 
 
 # Quick-start development settings - unsuitable for production
