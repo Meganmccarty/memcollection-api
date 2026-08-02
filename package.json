@@ -1,6 +1,6 @@
 {
     "name": "memcollection-api",
-    "version": "0.15.1",
+    "version": "0.15.2",
     "scripts": {
         "changelog": "auto-changelog --output docs/source/backend/changelog.md --template docs/source/_templates/default.hbs --commit-limit -p false -u"
     },
