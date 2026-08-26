@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from images.serializers import CustomImageSerializer
 from taxonomy.models import Order, Family, Subfamily, Tribe, Genus, Species, Subspecies
 
 
@@ -8,6 +9,8 @@ class OrderSerializer(serializers.ModelSerializer):
 
     It serializes all of the fields on the Order model, including those inherited from the
     TimeStampMixin."""
+
+    featured_image = CustomImageSerializer()
 
     class Meta:
         model = Order
@@ -18,6 +21,7 @@ class OrderSerializer(serializers.ModelSerializer):
             "authority",
             "date_created",
             "date_modified",
+            "featured_image",
         )
 
 
@@ -26,6 +30,8 @@ class FamilySerializer(serializers.ModelSerializer):
 
     It serializes all of the fields on the Family model, including those inherited from the
     TimeStampMixin."""
+
+    featured_image = CustomImageSerializer()
 
     class Meta:
         model = Family
@@ -37,6 +43,7 @@ class FamilySerializer(serializers.ModelSerializer):
             "date_created",
             "date_modified",
             "order",
+            "featured_image",
         )
 
 
@@ -104,6 +111,7 @@ class SpeciesSerializer(serializers.ModelSerializer):
     TimeStampMixin."""
 
     binomial = serializers.CharField()
+    featured_image = CustomImageSerializer()
 
     class Meta:
         model = Species
@@ -119,6 +127,7 @@ class SpeciesSerializer(serializers.ModelSerializer):
             "date_created",
             "date_modified",
             "genus",
+            "featured_image",
         )
 
 
