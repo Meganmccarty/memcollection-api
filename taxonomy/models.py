@@ -49,14 +49,25 @@ class Order(TimeStampMixin, TaxonomyBase):
     """A model that represents an Order object.
 
     Attributes:
-        name (str): The scientific name of the taxon.
-        common_name (str): The common name of the taxon, if it has one.
-        authority (str): The authority of the taxon.
+        featured_image (CustomImage): The image to represent the order. Used for display on the \
+                                      frontend.
+        name (str): The scientific name of the taxon. Inherited from TaxonomyBase.
+        common_name (str): The common name of the taxon, if it has one. Inherited from TaxonomyBase.
+        authority (str): The authority of the taxon. Inherited from TaxonomyBase.
         date_created (datetime): The date when the object instance was created. Inherited from \
                                  TimeStampMixin.
         date_modified (datetime): The date when the object instance was last modified. Inherited \
                                   from TimeStampMixin.
     """
+
+    featured_image = models.OneToOneField(
+        "images.CustomImage",
+        on_delete=models.RESTRICT,
+        null=True,
+        blank=True,
+        related_name="+",
+        help_text="Select an image to represent this order",
+    )
 
     class Meta:
         ordering = ["name"]
@@ -67,9 +78,11 @@ class Family(TimeStampMixin, TaxonomyBase):
 
     Attributes:
         order (Order): The order to which the family belongs.
-        name (str): The scientific name of the taxon.
-        common_name (str): The common name of the taxon, if it has one.
-        authority (str): The authority of the taxon.
+        featured_image (InsectImage): The image to represent the family. Used for display on the \
+                                      frontend.
+        name (str): The scientific name of the taxon. Inherited from TaxonomyBase.
+        common_name (str): The common name of the taxon, if it has one. Inherited from TaxonomyBase.
+        authority (str): The authority of the taxon. Inherited from TaxonomyBase.
         date_created (datetime): The date when the object instance was created. Inherited from \
                                  TimeStampMixin.
         date_modified (datetime): The date when the object instance was last modified. Inherited \
@@ -82,6 +95,14 @@ class Family(TimeStampMixin, TaxonomyBase):
         related_name="+",
         help_text="Select an order to which this family belongs",
     )
+    featured_image = models.OneToOneField(
+        "images.CustomImage",
+        on_delete=models.RESTRICT,
+        null=True,
+        blank=True,
+        related_name="+",
+        help_text="Select an image to represent this family",
+    )
 
     class Meta:
         ordering = ["name", "order"]
@@ -93,9 +114,9 @@ class Subfamily(TimeStampMixin, TaxonomyBase):
 
     Attributes:
         family (Family): The family to which the subfamily belongs.
-        name (str): The scientific name of the taxon.
-        common_name (str): The common name of the taxon, if it has one.
-        authority (str): The authority of the taxon.
+        name (str): The scientific name of the taxon. Inherited from TaxonomyBase.
+        common_name (str): The common name of the taxon, if it has one. Inherited from TaxonomyBase.
+        authority (str): The authority of the taxon. Inherited from TaxonomyBase.
         date_created (datetime): The date when the object instance was created. Inherited from \
                                  TimeStampMixin.
         date_modified (datetime): The date when the object instance was last modified. Inherited \
@@ -119,9 +140,9 @@ class Tribe(TimeStampMixin, TaxonomyBase):
 
     Attributes:
         subfamily (Subfamily): The subfamily to which the tribe belongs.
-        name (str): The scientific name of the taxon.
-        common_name (str): The common name of the taxon, if it has one.
-        authority (str): The authority of the taxon.
+        name (str): The scientific name of the taxon. Inherited from TaxonomyBase.
+        common_name (str): The common name of the taxon, if it has one. Inherited from TaxonomyBase.
+        authority (str): The authority of the taxon. Inherited from TaxonomyBase.
         date_created (datetime): The date when the object instance was created. Inherited from \
                                  TimeStampMixin.
         date_modified (datetime): The date when the object instance was last modified. Inherited \
@@ -144,9 +165,9 @@ class Genus(TimeStampMixin, TaxonomyBase):
 
     Attributes:
         tribe (Tribe): The tribe to which the genus belongs.
-        name (str): The scientific name of the taxon.
-        common_name (str): The common name of the taxon, if it has one.
-        authority (str): The authority of the taxon.
+        name (str): The scientific name of the taxon. Inherited from TaxonomyBase.
+        common_name (str): The common name of the taxon, if it has one. Inherited from TaxonomyBase.
+        authority (str): The authority of the taxon. Inherited from TaxonomyBase.
         date_created (datetime): The date when the object instance was created. Inherited from \
                                  TimeStampMixin.
         date_modified (datetime): The date when the object instance was last modified. Inherited \
@@ -174,9 +195,10 @@ class Species(TimeStampMixin, TaxonomyBase):
         p3 (str): The P3 (Pohl, Patterson, Pelham 2016) number for the species (Lepidoptera only).
         ps (str): The Phylogenetic Sequence (Pohl and Nanz, 2023) number for the species \
                   (Lepidoptera only).
-        name (str): The scientific name of the taxon.
-        common_name (str): The common name of the taxon, if it has one.
-        authority (str): The authority of the taxon.
+        featured_image: The image to represent the species. Used for display on the frontend.
+        name (str): The scientific name of the taxon. Inherited from TaxonomyBase.
+        common_name (str): The common name of the taxon, if it has one. Inherited from TaxonomyBase.
+        authority (str): The authority of the taxon. Inherited from TaxonomyBase.
         date_created (datetime): The date when the object instance was created. Inherited from \
                                  TimeStampMixin.
         date_modified (datetime): The date when the object instance was last modified. Inherited \
@@ -208,6 +230,14 @@ class Species(TimeStampMixin, TaxonomyBase):
         verbose_name="PS #",
         help_text="Enter the Phylogenetic Sequence (Pohl and Nanz, 2023) number for the species \
             (Lepidoptera only)",
+    )
+    featured_image = models.OneToOneField(
+        "images.CustomImage",
+        on_delete=models.RESTRICT,
+        null=True,
+        blank=True,
+        related_name="+",
+        help_text="Select an image to represent this species",
     )
 
     class Meta:

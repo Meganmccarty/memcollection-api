@@ -1,7 +1,7 @@
-Django>=6.0.7,<6.1
-python-dotenv==1.2.2
-wagtail>=7.4.2,<7.5
-gunicorn>=26.0.0,<27.0.0
+Django>=6.1,<6.2
+python-dotenv==1.2.3
+wagtail>=7.4.3,<7.5
+gunicorn>=26.1.0,<27.0.0
 psycopg2==2.9.12
 dj-database-url>=3.1.2,<4.0.0
 whitenoise>=6.12.0,<6.13
@@ -9,4 +9,4 @@ django-storages[s3]>=1.14.6,<2.0.0
 django-cors-headers==4.9.0
 django-filter==26.1
 qrcode==8.2
-reportlab==5.0.0
+reportlab==5.0.1
