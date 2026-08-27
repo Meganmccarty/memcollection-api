@@ -4,6 +4,7 @@ import tempfile
 from core.utils.helpers import get_fields
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponse
+from django.template.response import TemplateResponse
 from io import BytesIO
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
@@ -57,8 +58,20 @@ class SpecimenRecordAPIViewSet(BaseAPIViewSet):
 
 @staff_member_required
 def export_qr_codes_pdf(request):
-    """Export QR codes to printable PDF."""
-    specimens = SpecimenRecord.objects.filter(qr_code__isnull=False)
+    """Export QR codes to printable PDF for a range of specimens."""
+
+    start_usi = request.GET.get("start_usi", "").upper()
+    end_usi = request.GET.get("end_usi", "").upper()
+
+    specimens = SpecimenRecord.objects.filter(qr_code__isnull=False).order_by("usi")
+
+    if start_usi:
+        specimens = specimens.filter(usi__gte=start_usi)
+    if end_usi:
+        specimens = specimens.filter(usi__lte=end_usi)
+
+    # Limit to 600 (one page of labels)
+    specimens = specimens[:600]
 
     buffer = BytesIO()
     c = canvas.Canvas(buffer, pagesize=letter)
@@ -70,59 +83,68 @@ def export_qr_codes_pdf(request):
     label_height = height / labels_per_col
 
     label_count = 0
-    for specimen in specimens:
-        row = label_count % labels_per_col
-        col = (label_count // labels_per_col) % labels_per_row
+    tmp_files = []
 
-        x = col * label_width
-        y = height - (row + 1) * label_height
+    try:
+        for specimen in specimens:
+            row = label_count % labels_per_col
+            col = (label_count // labels_per_col) % labels_per_row
 
-        c.rect(x, y, label_width, label_height)
+            x = col * label_width
+            y = height - (row + 1) * label_height
 
-        qr_size = 20
-        qr_x = x + (label_width - qr_size) - 2
-        qr_y = y + (label_height - qr_size) - 2
+            c.rect(x, y, label_width, label_height)
 
-        if specimen.qr_code:
-            if os.getenv("ENVIRONMENT") == "prod":
-                qr_file = BytesIO(specimen.qr_code.read())
-                with tempfile.NamedTemporaryFile(
-                    suffix=".png", delete=False
-                ) as tmp_file:
-                    tmp_file.write(qr_file.read())
-                    tmp_path = tmp_file.name
+            qr_size = 20
+            qr_x = x + (label_width - qr_size) - 2
+            qr_y = y + (label_height - qr_size) - 2
 
-                c.drawImage(
-                    tmp_path,
-                    qr_x,
-                    qr_y,
-                    width=qr_size,
-                    height=qr_size,
-                    preserveAspectRatio=True,
-                )
+            if specimen.qr_code:
+                if os.getenv("ENVIRONMENT") == "prod":
+                    qr_file = BytesIO(specimen.qr_code.read())
+                    with tempfile.NamedTemporaryFile(
+                        suffix=".png", delete=False
+                    ) as tmp_file:
+                        tmp_file.write(qr_file.read())
+                        tmp_path = tmp_file.name
+                        tmp_files.append(tmp_path)
+                    c.drawImage(
+                        tmp_path,
+                        qr_x,
+                        qr_y,
+                        width=qr_size,
+                        height=qr_size,
+                        preserveAspectRatio=True,
+                    )
+                else:
+                    c.drawImage(
+                        specimen.qr_code.path,
+                        qr_x,
+                        qr_y,
+                        width=qr_size,
+                        height=qr_size,
+                        preserveAspectRatio=True,
+                    )
+
+            # Put specimen usi as text below QR code
+            c.setFont("Helvetica", 3)
+            usi_text = specimen.usi
+            text_width = c.stringWidth(usi_text, "Helvetica", 3)
+            text_x = x + (label_width - text_width) - 3
+            text_y = qr_y - 8
+            c.drawString(text_x, text_y, usi_text)
+
+            label_count += 1
+
+            if label_count % (labels_per_row * labels_per_col) == 0:
+                c.showPage()
+
+    finally:
+        for tmp_path in tmp_files:
+            try:
                 os.unlink(tmp_path)
-            else:
-                c.drawImage(
-                    specimen.qr_code.path,
-                    qr_x,
-                    qr_y,
-                    width=qr_size,
-                    height=qr_size,
-                    preserveAspectRatio=True,
-                )
-
-        # Put specimen usi as text below QR code
-        c.setFont("Helvetica", 3)
-        usi_text = specimen.usi
-        text_width = c.stringWidth(usi_text, "Helvetica", 3)
-        text_x = x + (label_width - text_width) - 3
-        text_y = qr_y - 8
-        c.drawString(text_x, text_y, usi_text)
-
-        label_count += 1
-
-        if label_count % (labels_per_row * labels_per_col) == 0:
-            c.showPage()
+            except OSError:
+                pass
 
     c.save()
     buffer.seek(0)
@@ -130,3 +152,16 @@ def export_qr_codes_pdf(request):
     response = HttpResponse(buffer, content_type="application/pdf")
     response["Content-Disposition"] = 'attachment; filename="specimen-qr-codes.pdf"'
     return response
+
+
+# views.py
+@staff_member_required
+def export_qr_codes_form(request):
+    """Render the export QR codes form."""
+    return TemplateResponse(
+        request,
+        "admin/export_qr_codes.html",
+        {
+            "title": "Export QR Codes",
+        },
+    )
