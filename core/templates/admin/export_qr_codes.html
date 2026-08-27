@@ -1,0 +1,38 @@
+{% extends "wagtailadmin/base.html" %}
+
+{% block content %}
+<div class="qr-codes">
+    <h1>Export QR Codes</h1>
+    <p>Export up to 600 QR codes (one label sheet) at a time.</p>
+
+    <form method="get" action="{% url 'export_qr_codes_pdf' %}">
+        <div class="inner-form-container">
+            <div>
+                <label for="start_usi">Start USI</label>
+                <input
+                    type="text"
+                    id="start_usi"
+                    name="start_usi"
+                    placeholder="e.g. MEM-000001"
+                />
+            </div>
+            <div>
+                <label for="end_usi">End USI</label>
+                <input
+                    type="text"
+                    id="end_usi"
+                    name="end_usi"
+                    placeholder="e.g. MEM-000600"
+                />
+            </div>
+            <div>
+                <button type="submit" class="button">Download PDF</button>
+            </div>
+        </div>
+        <p class="help">
+            Leave both fields empty to export the first 600 specimens with QR codes.
+            Maximum 600 per export (one label sheet).
+        </p>
+    </form>
+</div>
+{% endblock %}

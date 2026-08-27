@@ -97,3 +97,65 @@ a.sidebar-custom-branding {
     height: 6.25rem;
     width: 6.25rem;
 }
+
+.qr-codes {
+    padding-inline-end: 1.5rem;
+    padding-inline-start: 1.5rem;
+    margin-top: 4rem;
+}
+
+.qr-codes h1 {
+    color: var(--w-color-text-label);
+    font-size: 1.875rem;
+    font-weight: 800;
+    line-height: 1.3;
+    margin-top: 0;
+}
+
+.qr-codes form {
+    margin-top: 2rem;
+}
+
+.qr-codes form .inner-form-container {
+    align-items: flex-end;
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.inner-form-container label {
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.inner-form-container input {
+    border: 1px solid var(--w-color-border-field-default);
+    border-radius: 4px;
+    padding: 0.5rem;
+}
+
+@media (min-width: 75em) {
+    .qr-codes {
+        margin-top: 3.75rem;
+    }
+}
+
+@media (min-width: 50em) {
+    .qr-codes {
+        padding-inline-end: 3.75rem;
+        padding-inline-start: 3.75rem;
+    }
+}
+
+@media (min-width: 50em) {
+    .qr-codes {
+        margin-top: 2.5rem;
+    }
+}
+
+@media (max-width: 925px) {
+    .qr-codes form .inner-form-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

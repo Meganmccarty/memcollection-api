@@ -1,9 +1,14 @@
-from django.test import Client, TestCase
+from django.test import Client, TestCase, override_settings
 from django.contrib.auth.models import User
 
 from specimens.models import SpecimenRecord
 
 
+@override_settings(
+    STATICFILES_STORAGE="django.contrib.staticfiles.storage.StaticFilesStorage",
+    DEBUG=True,
+    WHITENOISE_AUTOREFRESH=True,
+)
 class ExportQrCodesToPdfTestCase(TestCase):
     """A test case for the export_qr_codes view."""
 
@@ -63,7 +68,7 @@ class ExportQrCodesToPdfTestCase(TestCase):
         """Ensures response has a PDF content type with a name of 'specimen-qr-codes'."""
 
         self.client.login(username="staff", password="testpass123")
-        response = self.client.get("/admin/export-qr-codes/")
+        response = self.client.get("/admin/export-qr-codes/download/")
         self.assertEqual(response["Content-Type"], "application/pdf")
         self.assertIn("specimen-qr-codes.pdf", response["Content-Disposition"])
 
@@ -71,5 +76,5 @@ class ExportQrCodesToPdfTestCase(TestCase):
         """Ensures the PDF response has QR code data."""
 
         self.client.login(username="staff", password="testpass123")
-        response = self.client.get("/admin/export-qr-codes/")
+        response = self.client.get("/admin/export-qr-codes/download/")
         self.assertGreater(len(response.content), 100)
