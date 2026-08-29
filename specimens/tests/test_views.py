@@ -41,8 +41,9 @@ class ExportQrCodesToPdfTestCase(TestCase):
             username="regular", password="testpass123"
         )
         self.specimen = SpecimenRecord.objects.get(usi="MEM-000001")
-        self.specimen.generate_qr_code()
-        self.specimen.save()
+
+        if not self.specimen.short_code:
+            self.specimen.save()
 
     def test_requires_staff_member(self):
         """Ensures view requires authentication."""
@@ -58,7 +59,7 @@ class ExportQrCodesToPdfTestCase(TestCase):
         self.assertIn(response.status_code, [403, 302])
 
     def test_staff_user_allowed(self):
-        """Ensures a staff user is allowed to access view."""
+        """Ensures a staff user is allowed to access the form view."""
 
         self.client.login(username="staff", password="testpass123")
         response = self.client.get("/admin/export-qr-codes/")

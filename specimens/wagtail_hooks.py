@@ -163,12 +163,7 @@ class SpecimenRecordSnippet(SnippetWithCustomDeleteViewSet):
                 ),
                 FieldPanel("habitat"),
                 FieldPanel("notes"),
-                FieldRowPanel(
-                    [
-                        FieldPanel("short_code", read_only=True),
-                        FieldPanel("qr_code"),
-                    ]
-                ),
+                FieldPanel("short_code", read_only=True),
             ],
             heading="Locality Details",
         ),
