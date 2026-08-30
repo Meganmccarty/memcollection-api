@@ -1,4 +1,5 @@
 import os
+import qrcode
 import tempfile
 
 from core.utils.helpers import get_fields
@@ -63,15 +64,16 @@ def export_qr_codes_pdf(request):
     start_usi = request.GET.get("start_usi", "").upper()
     end_usi = request.GET.get("end_usi", "").upper()
 
-    specimens = SpecimenRecord.objects.filter(qr_code__isnull=False).order_by("usi")
+    specimens = (
+        SpecimenRecord.objects.filter(short_code__isnull=False)
+        .exclude(short_code="")
+        .order_by("usi")
+    )
 
     if start_usi:
         specimens = specimens.filter(usi__gte=start_usi)
     if end_usi:
         specimens = specimens.filter(usi__lte=end_usi)
-
-    # Limit to 600 (one page of labels)
-    specimens = specimens[:600]
 
     buffer = BytesIO()
     c = canvas.Canvas(buffer, pagesize=letter)
@@ -83,68 +85,60 @@ def export_qr_codes_pdf(request):
     label_height = height / labels_per_col
 
     label_count = 0
-    tmp_files = []
 
-    try:
-        for specimen in specimens:
-            row = label_count % labels_per_col
-            col = (label_count // labels_per_col) % labels_per_row
+    for specimen in specimens:
+        row = label_count % labels_per_col
+        col = (label_count // labels_per_col) % labels_per_row
 
-            x = col * label_width
-            y = height - (row + 1) * label_height
+        x = col * label_width
+        y = height - (row + 1) * label_height
 
-            c.rect(x, y, label_width, label_height)
+        c.rect(x, y, label_width, label_height)
 
-            qr_size = 20
-            qr_x = x + (label_width - qr_size) - 2
-            qr_y = y + (label_height - qr_size) - 2
+        qr_size = 20
+        qr_x = x + (label_width - qr_size) - 2
+        qr_y = y + (label_height - qr_size) - 2
 
-            if specimen.qr_code:
-                if os.getenv("ENVIRONMENT") == "prod":
-                    qr_file = BytesIO(specimen.qr_code.read())
-                    with tempfile.NamedTemporaryFile(
-                        suffix=".png", delete=False
-                    ) as tmp_file:
-                        tmp_file.write(qr_file.read())
-                        tmp_path = tmp_file.name
-                        tmp_files.append(tmp_path)
-                    c.drawImage(
-                        tmp_path,
-                        qr_x,
-                        qr_y,
-                        width=qr_size,
-                        height=qr_size,
-                        preserveAspectRatio=True,
-                    )
-                else:
-                    c.drawImage(
-                        specimen.qr_code.path,
-                        qr_x,
-                        qr_y,
-                        width=qr_size,
-                        height=qr_size,
-                        preserveAspectRatio=True,
-                    )
+        short_url = f"www.memcollection.com/s/{specimen.short_code}"
+        qr = qrcode.QRCode(
+            version=1,
+            error_correction=qrcode.constants.ERROR_CORRECT_M,
+            box_size=10,
+            border=1,
+        )
+        qr.add_data(short_url)
+        qr.make(fit=True)
+        img = qr.make_image(fill_color="black", back_color="white")
 
-            # Put specimen usi as text below QR code
-            c.setFont("Helvetica", 3)
-            usi_text = specimen.usi
-            text_width = c.stringWidth(usi_text, "Helvetica", 3)
-            text_x = x + (label_width - text_width) - 3
-            text_y = qr_y - 8
-            c.drawString(text_x, text_y, usi_text)
+        img_io = BytesIO()
+        img.save(img_io, format="PNG")
+        img_io.seek(0)
 
-            label_count += 1
+        with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp_file:
+            tmp_file.write(img_io.read())
+            tmp_path = tmp_file.name
+        c.drawImage(
+            tmp_path,
+            qr_x,
+            qr_y,
+            width=qr_size,
+            height=qr_size,
+            preserveAspectRatio=True,
+        )
+        os.unlink(tmp_path)
 
-            if label_count % (labels_per_row * labels_per_col) == 0:
-                c.showPage()
+        # Put specimen usi as text below QR code
+        c.setFont("Helvetica", 3)
+        usi_text = specimen.usi
+        text_width = c.stringWidth(usi_text, "Helvetica", 3)
+        text_x = x + (label_width - text_width) - 3
+        text_y = qr_y - 8
+        c.drawString(text_x, text_y, usi_text)
 
-    finally:
-        for tmp_path in tmp_files:
-            try:
-                os.unlink(tmp_path)
-            except OSError:
-                pass
+        label_count += 1
+
+        if label_count % (labels_per_row * labels_per_col) == 0:
+            c.showPage()
 
     c.save()
     buffer.seek(0)
