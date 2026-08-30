@@ -130,18 +130,12 @@ local-restore: ## Loads a backup's data into the local database (must set 'filen
 	docker compose run --rm web python manage.py loaddata $(filename)
 
 
-# QR code generation commands
-generate-qr-codes: ## Generates QR codes for specimens that do not currently have QR codes
-	docker compose run --rm web python manage.py generate_qr_codes
+# Short code generation commands
+generate-short-codes: ## Generates short codes for specimens that do not currently have short codes
+	docker compose run --rm web python manage.py generate_short_codes
 
-generate-qr-codes-all: ## Generates QR codes for all specimens, overwriting existing QR codes
-	docker compose run --rm web python manage.py generate_qr_codes --all
-
-generate-qr-code: ## Generates a QR code for a specific specimen (must set 'usi=<specimen-usi>')
-	docker compose run --rm web python manage.py generate_qr_codes --usi ${usi}
-
-generate-qr-codes-range: ## Generates QR codes for a range of specimens (must set 'start=<start-specimen-usi>' and 'end=<end-specimen-usi>')
-	docker compose run --rm web python manage.py generate_qr_codes --range ${start} ${end}
+generate-short-codes-all: ## Generates short codes for all specimens
+	docker compose run --rm web python manage.py generate_short_codes --all
 
 
 # Linting, formatting, and testing commands
