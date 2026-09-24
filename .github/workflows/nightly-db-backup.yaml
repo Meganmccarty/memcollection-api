@@ -1,8 +1,6 @@
 name: Nightly Database Backup
 
 on:
-  schedule:
-    - cron: "22 5 * * *"
   workflow_dispatch:
 
 jobs:
